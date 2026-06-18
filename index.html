@@ -18,7 +18,7 @@
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;background:var(--bg-deep);color:var(--text-primary);font-family:'Pretendard',-apple-system,sans-serif;font-size:13px;}
 body{background:radial-gradient(ellipse at top,rgba(201,169,97,.08),transparent 50%),radial-gradient(ellipse at bottom,rgba(79,195,247,.05),transparent 50%),var(--bg-deep);min-height:100vh;}
-.num{font-family:'IBM Plex Sans',sans-serif;font-variant-numeric:tabular-nums;}
+.num{font-family:IBM Plex Sans,sans-serif;font-variant-numeric:tabular-nums;}
 .card{background:linear-gradient(135deg,var(--bg-card),var(--bg-card-hi));border:1px solid var(--border);border-radius:14px;padding:20px;}
 .header{position:sticky;top:0;z-index:50;background:rgba(10,14,24,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:14px 32px;}
 .btn{padding:7px 14px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text-secondary);transition:all .2s;}
@@ -322,8 +322,8 @@ function setTab(t){
 function getFilteredWeeks(){
   const d=getData();
   return d.weeks.filter(w=>{
-    const m=w.label.replace(/d주$/,'');
-    const wk=w.label.match(/d주$/)?.[0];
+    const m=w.label.replace(/\d+주$/,'');
+    const wk=w.label.match(/\d+주$/)?.[0];
     return selectedMonths.includes(m)&&selectedWeeks.includes(wk);
   });}
 
@@ -461,7 +461,7 @@ function renderLoad(){
     card.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">'+
       '<div style="font-size:11px;font-weight:700;color:var(--text-secondary);">'+i.item+'</div>'+
       '<div style="font-size:10px;color:var(--text-muted);">'+i.cat+'</div></div>'+
-      '<div style="font-size:22px;font-weight:700;font-family:'IBM Plex Sans',sans-serif;color:'+color+';margin-bottom:8px;">'+i.rate+'%</div>'+
+      '<div style="font-size:22px;font-weight:700;font-family:IBM Plex Sans,sans-serif;color:'+color+';margin-bottom:8px;">'+i.rate+'%</div>'+
       '<div class="load-bar-wrap"><div class="load-bar '+barClass+'" style="width:'+Math.min(i.rate,100)+'%;"></div></div>'+
       '<div style="margin-top:6px;font-size:10px;color:var(--text-muted);">ST '+i.st+'초 · '+i.weekProd+'개 · '+i.workers+'명</div>';
     lc.appendChild(card);});
