@@ -184,7 +184,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
 <div>
 <div style="font-size:13px;font-weight:700;color:var(--text-secondary);">⏱️ ST타임 대비 현장 부하율</div>
-<div style="font-size:11px;color:var(--text-muted);margin-top:2px;" id="loadSubtitle">품목별 ST × 생산수량 ÷ 주간 가용시간 · 필터 연동</div>
+<div style="font-size:11px;color:var(--text-muted);margin-top:2px;" id="loadSubtitle">품목별 ST × 계획수량 ÷ 가용시간 (진행중 월 계획 기준)</div>
 </div>
 <div style="display:flex;gap:12px;font-size:11px;color:var(--text-muted);align-items:center;flex-wrap:wrap;">
 <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--emerald);margin-right:4px;"></span>여유 (≤80%)</span>
@@ -393,7 +393,7 @@ document.getElementById('loadItemView').style.display=t==='item'?'':'none';
 document.getElementById('loadProcessView').style.display=t==='process'?'':'none';
 const d=getData();
 if(t==='item'){
-document.getElementById('loadSubtitle').textContent='품목별 ST × 생산수량 ÷ 주간 가용시간 · 필터 연동';
+document.getElementById('loadSubtitle').textContent='품목별 ST × 계획수량 ÷ 가용시간 (진행중 월 계획 기준)';
 }else{
 document.getElementById('loadSubtitle').textContent='공정그룹별 가용시간 대비 필요시간 · 출처: 생산2반_CAPA_부하율_WIP관리_v3 시트3';
 }
@@ -592,11 +592,15 @@ const filtered=selectedCats.length?d.stItems.filter(i=>selectedCats.includes(i.c
 const pgNames=['레이저웰딩','디스펜싱','납땜','일반공정'];
 const pgReqMin={};
 pgNames.forEach(pg=>{pgReqMin[pg]=0;});
+const _inProg=d.months.find(m=>m.status==='진행중')||d.months[d.months.length-1];
+const _mPlan=_inProg?_inProg.plan:0;
+const _totalOrd=d.stItems.reduce((s,i)=>s+i.monthOrder,0);
 filtered.forEach(item=>{
-pgReqMin['레이저웰딩']+=(item.laserWeld||0)*item.monthOrder;
-pgReqMin['디스펜싱']+=(item.dispense||0)*item.monthOrder;
-pgReqMin['납땜']+=(item.solder||0)*item.monthOrder;
-pgReqMin['일반공정']+=(item.general||0)*item.monthOrder;});
+const _pQty=_totalOrd>0?Math.round(_mPlan*item.monthOrder/_totalOrd):item.monthOrder;
+pgReqMin['레이저웰딩']+=(item.laserWeld||0)*_pQty;
+pgReqMin['디스펜싱']+=(item.dispense||0)*_pQty;
+pgReqMin['납땜']+=(item.solder||0)*_pQty;
+pgReqMin['일반공정']+=(item.general||0)*_pQty;});
 const pgData=d.processGroups.map(pg=>({
 ...pg,
 reqMin:pgReqMin[pg.name]||0,
@@ -627,7 +631,7 @@ card.innerHTML=
 pc.appendChild(card);});
 const tb=document.getElementById('loadStTableBody');tb.innerHTML='';
 filtered.forEach(item=>{
-const totalReq=(item.laserWeld||0)*item.monthOrder+(item.dispense||0)*item.monthOrder+(item.solder||0)*item.monthOrder+(item.general||0)*item.monthOrder;
+const _pQ2=_totalOrd>0?Math.round(_mPlan*item.monthOrder/_totalOrd):item.monthOrder;const totalReq=(item.laserWeld||0)*_pQ2+(item.dispense||0)*_pQ2+(item.solder||0)*_pQ2+(item.general||0)*_pQ2;
 const tr=document.createElement('tr');
 tr.innerHTML='<td style="font-weight:600;color:var(--text-secondary);">'+item.item+'</td>'+
 '<td style="text-align:center;font-weight:700;color:var(--violet);font-family:IBM Plex Sans,sans-serif;">'+item.stMin+'</td>'+
@@ -635,14 +639,14 @@ tr.innerHTML='<td style="font-weight:600;color:var(--text-secondary);">'+item.it
 '<td style="text-align:center;color:var(--text-secondary);">'+(item.dispense||0)+'</td>'+
 '<td style="text-align:center;color:var(--text-secondary);">'+(item.solder||0)+'</td>'+
 '<td style="text-align:center;color:var(--text-secondary);">'+(item.general||0)+'</td>'+
-'<td style="text-align:center;color:var(--amber);font-family:IBM Plex Sans,sans-serif;">'+item.monthOrder+'</td>'+
+'<td style="text-align:center;color:var(--amber);font-family:IBM Plex Sans,sans-serif;">'+(_totalOrd>0?Math.round(_mPlan*item.monthOrder/_totalOrd):item.monthOrder)+'</td>'+
 '<td style="text-align:center;color:var(--sky);font-family:IBM Plex Sans,sans-serif;font-weight:700;">'+totalReq.toLocaleString()+'</td>';
 tb.appendChild(tr);});
-const totalReqAll=filtered.reduce((s,i)=>(s+(i.laserWeld||0)*i.monthOrder+(i.dispense||0)*i.monthOrder+(i.solder||0)*i.monthOrder+(i.general||0)*i.monthOrder),0);
+const totalReqAll=filtered.reduce((s,i)=>{const _pQ3=_totalOrd>0?Math.round(_mPlan*i.monthOrder/_totalOrd):i.monthOrder;return s+(i.laserWeld||0)*_pQ3+(i.dispense||0)*_pQ3+(i.solder||0)*_pQ3+(i.general||0)*_pQ3;},0);
 const totalAvailAll=d.processGroups.reduce((s,pg)=>s+pg.availMin,0);
 const totalRate=totalAvailAll>0?Math.round(totalReqAll/totalAvailAll*100):0;
 const over=pgData.filter(i=>i.rate>100),warn=pgData.filter(i=>i.rate>80&&i.rate<=100);
-document.getElementById('loadSummary').innerHTML='▶ 공정그룹 전체 부하율(가중): <strong style="color:'+(totalRate<=80?'var(--emerald)':totalRate<=100?'var(--amber)':'var(--rose)')+'">'+totalRate+'%</strong> · 필요 '+totalReqAll.toLocaleString()+'분 / 가용 '+totalAvailAll.toLocaleString()+'분'+(over.length?'<br/>⚠️ 과부하 공정: <span style="color:var(--rose)">'+over.map(i=>i.name).join(', ')+'</span>':'<br/>✅ 모든 공정 여유 상태')+(warn.length?'<br/>🟡 주의 공정: <span style="color:var(--amber)">'+warn.map(i=>i.name).join(', ')+'</span>':'')+'<br/><span style="color:var(--text-muted);font-size:10px;">📋 출처: 생산2반_CAPA_부하율_WIP관리_v3 · 3번 시트(제품별 공정그룹ST) 기준</span>';}
+document.getElementById('loadSummary').innerHTML='▶ 공정그룹 전체 부하율(가중): <strong style="color:'+(totalRate<=80?'var(--emerald)':totalRate<=100?'var(--amber)':'var(--rose)')+'">'+totalRate+'%</strong> · 필요 '+totalReqAll.toLocaleString()+'분 / 가용 '+totalAvailAll.toLocaleString()+'분'+(over.length?'<br/>⚠️ 과부하 공정: <span style="color:var(--rose)">'+over.map(i=>i.name).join(', ')+'</span>':'<br/>✅ 모든 공정 여유 상태')+(warn.length?'<br/>🟡 주의 공정: <span style="color:var(--amber)">'+warn.map(i=>i.name).join(', ')+'</span>':'')+'<br/><span style="color:var(--text-muted);font-size:10px;">📋 '+_inProg.month+' 계획 '+_mPlan.toLocaleString()+'EA 기준 · 출처: 생산2반_CAPA_부하율_WIP관리_v3 · 3번 시트(제품별 공정그룹ST)</span>';}
 function renderInsight(fw){
 const d=getData();const last=fw.length?fw[fw.length-1]:null,prev=fw.length>1?fw[fw.length-2]:null;const insightEl=document.getElementById('insightContent');
 document.getElementById('insightFilterLabel').textContent='('+selectedMonths.join('·')+' · '+selectedCats.join('·')+')';
