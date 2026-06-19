@@ -357,7 +357,7 @@ c.className='chip chip-month'+(selectedMonths.includes(m)?' active':'');
 c.textContent=m;c.dataset.val=m;
 c.onclick=()=>toggleMonth(m);
 mc.appendChild(c);});
-setupDrag('monthChips','month',v=>{selectedMonths=selectedMonths.includes(v)?selectedMonths.filter(x=>x!==m):[...selectedMonths,v];if(!selectedMonths.length)selectedMonths=[v];},v=>selectedMonths.includes(v));
+setupDrag('monthChips','month',v=>{selectedMonths=selectedMonths.includes(v)?selectedMonths.filter(x=>x!==v):[...selectedMonths,v];if(!selectedMonths.length)selectedMonths=[v];},v=>selectedMonths.includes(v));
 const wc=document.getElementById('weekChips');wc.innerHTML='';
 ['1주','2주','3주','4주','5주'].forEach(w=>{
 const c=document.createElement('span');
@@ -401,8 +401,8 @@ renderLoad();}
 function getFilteredWeeks(){
 const d=getData();
 return d.weeks.filter(w=>{
-const m=w.label.replace(/d+주$/,'');
-const wk=w.label.match(/d+주$/)?.[0];
+const m=w.label.replace(/\d+주$/,'');
+const wk=w.label.match(/\d+주$/)?.[0];
 return selectedMonths.includes(m)&&selectedWeeks.includes(wk);});}
 </script>
 <script>
