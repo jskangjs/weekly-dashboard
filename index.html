@@ -319,6 +319,8 @@ let dragState=null;
 function setupDrag(gridId,type,toggleSilent,isActive){
 const grid=document.getElementById(gridId);
 if(!grid)return;
+if(grid.dataset.dragBound)return;
+grid.dataset.dragBound='1';
 grid.addEventListener('mousedown',e=>{
 const chip=e.target.closest('.chip');
 if(!chip)return;
