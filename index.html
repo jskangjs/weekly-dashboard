@@ -347,7 +347,6 @@ const yc=document.getElementById('yearChips');yc.innerHTML='';
 const c=document.createElement('span');
 c.className='chip chip-year'+(selectedYears.includes(y)?' active':'');
 c.textContent=y;c.dataset.val=y;
-c.onclick=()=>toggleYear(y);
 yc.appendChild(c);});
 setupDrag('yearChips','year',v=>{selectedYears=selectedYears.includes(v)?selectedYears.filter(x=>x!==v):[...selectedYears,v];if(!selectedYears.length)selectedYears=[v];},v=>selectedYears.includes(v));
 const mc=document.getElementById('monthChips');mc.innerHTML='';
@@ -355,7 +354,6 @@ const mc=document.getElementById('monthChips');mc.innerHTML='';
 const c=document.createElement('span');
 c.className='chip chip-month'+(selectedMonths.includes(m)?' active':'');
 c.textContent=m;c.dataset.val=m;
-c.onclick=()=>toggleMonth(m);
 mc.appendChild(c);});
 setupDrag('monthChips','month',v=>{selectedMonths=selectedMonths.includes(v)?selectedMonths.filter(x=>x!==v):[...selectedMonths,v];if(!selectedMonths.length)selectedMonths=[v];},v=>selectedMonths.includes(v));
 const wc=document.getElementById('weekChips');wc.innerHTML='';
@@ -363,7 +361,6 @@ const wc=document.getElementById('weekChips');wc.innerHTML='';
 const c=document.createElement('span');
 c.className='chip chip-week'+(selectedWeeks.includes(w)?' active':'');
 c.textContent=w;c.dataset.val=w;
-c.onclick=()=>toggleWeek(w);
 wc.appendChild(c);});
 setupDrag('weekChips','week',v=>{selectedWeeks=selectedWeeks.includes(v)?selectedWeeks.filter(x=>x!==v):[...selectedWeeks,v];if(!selectedWeeks.length)selectedWeeks=[v];},v=>selectedWeeks.includes(v));
 const cc=document.getElementById('catChips');cc.innerHTML='';
@@ -371,7 +368,6 @@ d.cats.forEach(cat=>{
 const c=document.createElement('span');
 c.className='chip chip-cat'+(selectedCats.includes(cat)?' active':'');
 c.textContent=cat;c.dataset.val=cat;
-c.onclick=()=>toggleCat(cat);
 cc.appendChild(c);});
 setupDrag('catChips','cat',v=>{selectedCats=selectedCats.includes(v)?selectedCats.filter(x=>x!==v):[...selectedCats,v];if(!selectedCats.length)selectedCats=[v];},v=>selectedCats.includes(v));}
 function toggleYear(y){selectedYears=selectedYears.includes(y)?selectedYears.filter(x=>x!==y):[...selectedYears,y];if(!selectedYears.length)selectedYears=[y];render();}
