@@ -34,6 +34,8 @@ body{background:radial-gradient(ellipse 80% 40% at 20% 0%,rgba(124,111,205,.12),
 .chip-week.active{background:rgba(45,212,191,.2);border-color:var(--teal);box-shadow:0 0 8px rgba(45,212,191,.25);}
 .chip-cat{color:var(--amber);border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.05);}
 .chip-cat.active{background:rgba(251,191,36,.2);border-color:var(--amber);box-shadow:0 0 8px rgba(251,191,36,.25);}
+.chip-item{color:var(--text-secondary);border-color:rgba(139,148,158,.3);background:rgba(139,148,158,.05);}
+.chip-item.active{background:rgba(56,189,248,.18);border-color:var(--sky);color:var(--sky);box-shadow:0 0 8px rgba(56,189,248,.2);}
 .kpi-label{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;}
 .kpi-val{font-size:26px;font-weight:700;font-family:IBM Plex Sans,sans-serif;font-variant-numeric:tabular-nums;line-height:1.15;}
 .kpi-sub{font-size:11px;color:var(--text-secondary);margin-top:5px;}
@@ -85,6 +87,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <div class="filter-row"><span class="filter-label">월</span><div class="filter-grid" id="monthChips"></div><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="selectAllMonths()">전체</button><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="selectRecentMonths()">최근 3개월</button></div>
 <div class="filter-row"><span class="filter-label">주차</span><div class="filter-grid" id="weekChips"></div><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="selectAllWeeks()">전체</button></div>
 <div class="filter-row"><span class="filter-label">품목군</span><div class="filter-grid" id="catChips"></div><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="selectAllCats()">전체</button><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="clearCats()">해제</button></div>
+<div class="filter-row" id="itemFilterRow" style="display:none;"><span class="filter-label">제품</span><div class="filter-grid" id="itemChips"></div></div>
 </div>
 </header>
 <main style="padding:20px 28px;display:flex;flex-direction:column;gap:16px;">
@@ -303,7 +306,7 @@ processGroups:[
 {name:'일반공정',workers:9,equipment:null,daysPerMonth:22,hoursPerDay:8,availMin:87120,comment:'Flex 보조 가능. 1_기준정보 B18 조정'}],
 cats:['EP','Duodeca','ENBD','EPO Probe']};
 let currentDept='1반',selectedYears=['2026년'],selectedMonths=['4월','5월','6월'],
-selectedWeeks=['1주','2주','3주','4주','5주'],selectedCats=[],currentTab='orders',currentLoadTab='item';
+selectedWeeks=['1주','2주','3주','4주','5주'],selectedCats=[],selectedItems=[],currentTab='orders',currentLoadTab='item';
 let chartMain,chartPlan,chartStock,chartLoad,chartLoadProcess;
 function getData(){return currentDept==='1반'?DATA_1:DATA_2;}
 const CAT_COLORS={'EP':'#3B82F6','Duodeca':'#F87171','ENBD':'#C4B5FD','EPO Probe':'#FB923C'};
@@ -375,7 +378,23 @@ const c=document.createElement('span');
 c.className='chip chip-cat'+(selectedCats.includes(cat)?' active':'');
 c.textContent=cat;c.dataset.val=cat;
 cc.appendChild(c);});
-setupDrag('catChips','cat',v=>{selectedCats=selectedCats.includes(v)?selectedCats.filter(x=>x!==v):[...selectedCats,v];if(!selectedCats.length)selectedCats=[v];},v=>selectedCats.includes(v));}
+setupDrag('catChips','cat',v=>{
+const wasActive=selectedCats.includes(v);
+selectedCats=wasActive?selectedCats.filter(x=>x!==v):[...selectedCats,v];
+if(!selectedCats.length)selectedCats=[v];
+const itemsInCat=getData().stItems.filter(i=>i.cat===v).map(i=>i.item);
+selectedItems=wasActive?selectedItems.filter(x=>!itemsInCat.includes(x)):[...new Set([...selectedItems,...itemsInCat])];
+},v=>selectedCats.includes(v));
+if(selectedItems.length===0)selectedItems=d.stItems.filter(i=>selectedCats.includes(i.cat)).map(i=>i.item);
+const ic=document.getElementById('itemChips');ic.innerHTML='';
+const visibleItems=d.stItems.filter(i=>selectedCats.includes(i.cat));
+document.getElementById('itemFilterRow').style.display=visibleItems.length?'':'none';
+visibleItems.forEach(i=>{
+const c=document.createElement('span');
+c.className='chip chip-item'+(selectedItems.includes(i.item)?' active':'');
+c.textContent=i.item;c.dataset.val=i.item;
+ic.appendChild(c);});
+setupDrag('itemChips','item',v=>{selectedItems=selectedItems.includes(v)?selectedItems.filter(x=>x!==v):[...selectedItems,v];if(!selectedItems.length)selectedItems=[v];},v=>selectedItems.includes(v));}
 function toggleYear(y){selectedYears=selectedYears.includes(y)?selectedYears.filter(x=>x!==y):[...selectedYears,y];if(!selectedYears.length)selectedYears=[y];render();}
 function toggleMonth(m){selectedMonths=selectedMonths.includes(m)?selectedMonths.filter(x=>x!==m):[...selectedMonths,m];if(!selectedMonths.length)selectedMonths=[m];render();}
 function toggleWeek(w){selectedWeeks=selectedWeeks.includes(w)?selectedWeeks.filter(x=>x!==w):[...selectedWeeks,w];if(!selectedWeeks.length)selectedWeeks=[w];render();}
@@ -383,9 +402,9 @@ function toggleCat(cat){selectedCats=selectedCats.includes(cat)?selectedCats.fil
 function selectAllMonths(){selectedMonths=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];render();}
 function selectRecentMonths(){selectedMonths=['4월','5월','6월'];render();}
 function selectAllWeeks(){selectedWeeks=['1주','2주','3주','4주','5주'];render();}
-function selectAllCats(){selectedCats=[...getData().cats];render();}
-function clearCats(){selectedCats=[];render();}
-function setDept(d){currentDept=d;selectedCats=[...getData().cats];document.querySelectorAll('[data-dept]').forEach(b=>{b.classList.toggle('active',b.dataset.dept===d);});document.getElementById('dashTitle').textContent=(d==='1반'?'생산1반':'생산2반')+' 주간 변동 현황';render();}
+function selectAllCats(){selectedCats=[...getData().cats];selectedItems=getData().stItems.map(i=>i.item);render();}
+function clearCats(){selectedCats=[];selectedItems=[];render();}
+function setDept(d){currentDept=d;selectedCats=[...getData().cats];selectedItems=[];document.querySelectorAll('[data-dept]').forEach(b=>{b.classList.toggle('active',b.dataset.dept===d);});document.getElementById('dashTitle').textContent=(d==='1반'?'생산1반':'생산2반')+' 주간 변동 현황';render();}
 function setTab(t){currentTab=t;['orders','prod','ship'].forEach(x=>{document.getElementById('tab'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('active',x===t);});renderMainChart();}
 function setLoadTab(t){
 currentLoadTab=t;
@@ -549,7 +568,7 @@ renderLoadItem(d);
 renderLoadProcess(d);
 }}
 function renderLoadItem(d){
-const filtered=selectedCats.length?d.stItems.filter(i=>selectedCats.includes(i.cat)):d.stItems;
+const filtered=selectedCats.length?d.stItems.filter(i=>selectedCats.includes(i.cat)&&(!selectedItems.length||selectedItems.includes(i.item))):d.stItems;
 const hasStMin=filtered.length&&filtered[0].stMin!==undefined;
 let loadData;
 if(hasStMin){
@@ -593,7 +612,7 @@ function renderLoadProcess(d){
 if(!d.processGroups){
 document.getElementById('loadProcessCards').innerHTML='<div style="color:var(--text-muted);font-size:12px;">공정그룹 데이터가 없습니다.</div>';
 return;}
-const filtered=selectedCats.length?d.stItems.filter(i=>selectedCats.includes(i.cat)):d.stItems;
+const filtered=selectedCats.length?d.stItems.filter(i=>selectedCats.includes(i.cat)&&(!selectedItems.length||selectedItems.includes(i.item))):d.stItems;
 const pgNames=['레이저웰딩','디스펜싱','납땜','일반공정'];
 const pgReqMin={};
 pgNames.forEach(pg=>{pgReqMin[pg]=0;});
@@ -667,14 +686,14 @@ else lines.push('불량률 <span style="color:var(--rose)">'+last.defect.toFixed
 const lacking=d.stock.filter(s=>s.current<s.safety&&selectedCats.includes(s.cat));
 if(lacking.length)lines.push('⚠️ 안전재고 부족 품목군('+lacking.map(s=>s.cat).join(', ')+') 우선 생산 편성 검토 필요.');
 if(d.processGroups){
-const filtered=d.stItems.filter(i=>selectedCats.includes(i.cat));
+const filtered=d.stItems.filter(i=>selectedCats.includes(i.cat)&&(!selectedItems.length||selectedItems.includes(i.item)));
 const pgReq={};['레이저웰딩','디스펜싱','납땜','일반공정'].forEach(pg=>{pgReq[pg]=0;});
 filtered.forEach(item=>{pgReq['레이저웰딩']+=(item.laserWeld||0)*item.monthOrder;pgReq['디스펜싱']+=(item.dispense||0)*item.monthOrder;pgReq['납땜']+=(item.solder||0)*item.monthOrder;pgReq['일반공정']+=(item.general||0)*item.monthOrder;});
 const overPG=d.processGroups.filter(pg=>pg.availMin>0&&pgReq[pg.name]/pg.availMin>1);
 if(overPG.length)lines.push('⏱️ 공정 과부하('+overPG.map(p=>p.name).join(', ')+') — 인원 재배치 또는 잔업 계획 수립 권고.');
 else lines.push('⏱️ 현장 공정 부하율 정상 범위 — 모든 공정 여유 상태.');}
 else{
-const filtST=d.stItems.filter(i=>selectedCats.includes(i.cat));const overloaded=filtST.filter(i=>{const a=i.workers*i.days*i.hoursPerDay*3600;return a>0&&i.st*i.weekProd/a>1;});
+const filtST=d.stItems.filter(i=>selectedCats.includes(i.cat)&&(!selectedItems.length||selectedItems.includes(i.item)));const overloaded=filtST.filter(i=>{const a=i.workers*i.days*i.hoursPerDay*3600;return a>0&&i.st*i.weekProd/a>1;});
 if(overloaded.length)lines.push('⏱️ 과부하 품목('+overloaded.map(i=>i.item).join(', ')+') 발생 — 인원 재배치 또는 잔업 계획 수립 권고.');
 else lines.push('⏱️ 현장 부하율 정상 범위 — 추가 물량 수용 여력 있음.');}
 insightEl.innerHTML=lines.map(l=>'<div style="display:flex;gap:8px;margin-bottom:4px;"><span style="color:var(--indigo);font-size:9px;margin-top:4px;flex-shrink:0;">▶</span><span>'+l+'</span></div>').join('');}
