@@ -306,6 +306,10 @@ let currentDept='1반',selectedYears=['2026년'],selectedMonths=['4월','5월','
 selectedWeeks=['1주','2주','3주','4주','5주'],selectedCats=[],currentTab='orders',currentLoadTab='item';
 let chartMain,chartPlan,chartStock,chartLoad,chartLoadProcess;
 function getData(){return currentDept==='1반'?DATA_1:DATA_2;}
+const CAT_COLORS={'EP':'#3B82F6','Duodeca':'#F87171','ENBD':'#C4B5FD','EPO Probe':'#FB923C'};
+const CAT_ORDER=['EP','Duodeca','ENBD','EPO Probe'];
+function catColor(cat){return CAT_COLORS[cat]||'#8B949E';}
+function catSort(arr,key){return[...arr].sort((a,b)=>{const ia=CAT_ORDER.indexOf(key?a[key]:a),ib=CAT_ORDER.indexOf(key?b[key]:b);return(ia<0?999:ia)-(ib<0?999:ib);});}
 function fmt(n){return n==null?'—':n.toLocaleString();}
 function deltaHtml(d){
 if(d==null||isNaN(d))return '<span style="color:var(--text-muted)">—</span>';
@@ -529,7 +533,7 @@ tr.innerHTML='<td style="color:var(--amber);">'+item.cat+'</td><td style="color:
 '<td class="num">'+fmt(item.plan)+'</td><td class="num">'+fmt(item.actual)+'</td>'+
 '<td class="num down">'+fmt(lack)+'</td><td style="color:var(--rose);">'+rate+'%</td>';tb.appendChild(tr);});}
 function renderStock(){
-const d=getData();const cats=d.stock.map(s=>s.cat);const rates=d.stock.map(s=>Math.round(s.current/s.safety*100));const colors=rates.map(r=>r>=100?'#34D399':r>=70?'#FBBF24':'#F87171');
+const d=getData();const ordered=[...catSort(d.stock,'cat')].reverse();const cats=ordered.map(s=>s.cat);const rates=ordered.map(s=>Math.round(s.current/s.safety*100));const colors=ordered.map(s=>catColor(s.cat));
 if(!chartStock)chartStock=echarts.init(document.getElementById('stockChart'),null,{renderer:'canvas'});
 chartStock.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12}},grid:{left:100,right:30,top:10,bottom:20},xAxis:{type:'value',max:150,axisLabel:{color:'#8B949E',fontSize:11,formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},yAxis:{type:'category',data:cats,axisLabel:{color:'#C9D1D9',fontSize:11}},series:[{type:'bar',data:rates.map((r,i)=>({value:r,itemStyle:{color:colors[i],borderRadius:[0,4,4,0]}})),label:{show:true,position:'right',color:'#C9D1D9',fontSize:11,formatter:'{c}%'}},{type:'line',data:Array(cats.length).fill(100),symbol:'none',lineStyle:{color:'rgba(255,255,255,.25)',type:'dashed',width:1.5}}]},true);
 const lacking=d.stock.filter(s=>s.current<s.safety);const alertEl=document.getElementById('stockAlert');
