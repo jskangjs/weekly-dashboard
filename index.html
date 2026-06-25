@@ -183,8 +183,8 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <section class="card">
 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
 <div>
-<div style="font-size:13px;font-weight:700;color:var(--text-secondary);">⏱️ ST타임 대비 현장 부하율</div>
-<div style="font-size:11px;color:var(--text-muted);margin-top:2px;" id="loadSubtitle">품목별 ST × 계획수량 ÷ 가용시간 (진행중 월 계획 기준)</div>
+<div style="font-size:13px;font-weight:700;color:var(--text-secondary);">⏱️ CAPA 대비 부하율</div>
+<div style="font-size:11px;color:var(--text-muted);margin-top:2px;" id="loadSubtitle">품목별 당월 계획수량 ÷ CAPA(하루 생산가능수량×인원×가동일)</div>
 </div>
 <div style="display:flex;gap:12px;font-size:11px;color:var(--text-muted);align-items:center;flex-wrap:wrap;">
 <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--emerald);margin-right:4px;"></span>여유 (≤80%)</span>
@@ -290,12 +290,12 @@ stock:[
 {cat:'ENBD',current:95,safety:80},
 {cat:'EPO Probe',current:60,safety:50}],
 stItems:[
-{cat:'EP',item:'EP 4극',stMin:85,laserWeld:15,dispense:10,solder:5,general:55,monthOrder:17,workers:2,days:22,hoursPerDay:8},
-{cat:'EP',item:'EP 10극',stMin:134,laserWeld:35,dispense:20,solder:15,general:64,monthOrder:35,workers:2,days:22,hoursPerDay:8},
-{cat:'EP',item:'EP 13극',stMin:173,laserWeld:52,dispense:25,solder:20,general:76,monthOrder:4,workers:2,days:22,hoursPerDay:8},
-{cat:'Duodeca',item:'DUO DECA',stMin:275,laserWeld:80,dispense:30,solder:20,general:145,monthOrder:5,workers:3,days:22,hoursPerDay:8},
-{cat:'ENBD',item:'ENBD',stMin:69,laserWeld:5,dispense:0,solder:0,general:64,monthOrder:4,workers:2,days:22,hoursPerDay:8},
-{cat:'EPO Probe',item:'EPO Probe',stMin:58,laserWeld:0,dispense:0,solder:0,general:58,monthOrder:0,workers:1,days:22,hoursPerDay:8}],
+{cat:'EP',item:'EP 4극',stMin:85,dailyCap:5.2,laserWeld:15,dispense:10,solder:5,general:55,monthOrder:17,workers:2,days:22,hoursPerDay:8},
+{cat:'EP',item:'EP 10극',stMin:134,dailyCap:3.3,laserWeld:35,dispense:20,solder:15,general:64,monthOrder:35,workers:2,days:22,hoursPerDay:8},
+{cat:'EP',item:'EP 13극',stMin:173,dailyCap:2.5,laserWeld:52,dispense:25,solder:20,general:76,monthOrder:4,workers:2,days:22,hoursPerDay:8},
+{cat:'Duodeca',item:'DUO DECA',stMin:275,dailyCap:1.6,laserWeld:80,dispense:30,solder:20,general:145,monthOrder:5,workers:3,days:22,hoursPerDay:8},
+{cat:'ENBD',item:'ENBD',stMin:69,dailyCap:6.4,laserWeld:5,dispense:0,solder:0,general:64,monthOrder:4,workers:2,days:22,hoursPerDay:8},
+{cat:'EPO Probe',item:'EPO Probe',stMin:58,dailyCap:7.6,laserWeld:0,dispense:0,solder:0,general:58,monthOrder:0,workers:1,days:22,hoursPerDay:8}],
 processGroups:[
 {name:'레이저웰딩',workers:4,equipment:4,daysPerMonth:22,hoursPerDay:8,availMin:38720,comment:'장비 4EA 제약. 초과 시 잔업/추가 장비 검토'},
 {name:'디스펜싱',workers:2,equipment:2,daysPerMonth:22,hoursPerDay:8,availMin:19360,comment:'장비 2EA·인원 2명 모두 제약. 교차훈련 우선'},
@@ -391,7 +391,7 @@ document.getElementById('loadItemView').style.display=t==='item'?'':'none';
 document.getElementById('loadProcessView').style.display=t==='process'?'':'none';
 const d=getData();
 if(t==='item'){
-document.getElementById('loadSubtitle').textContent='품목별 ST × 계획수량 ÷ 가용시간 (진행중 월 계획 기준)';
+document.getElementById('loadSubtitle').textContent='품목별 당월 계획수량 ÷ CAPA(하루 생산가능수량×인원×가동일)';
 }else{
 document.getElementById('loadSubtitle').textContent='공정그룹별 가용시간 대비 필요시간 · 출처: 생산2반_CAPA_부하율_WIP관리_v3 시트3';
 }
@@ -550,10 +550,10 @@ const hasStMin=filtered.length&&filtered[0].stMin!==undefined;
 let loadData;
 if(hasStMin){
 loadData=filtered.map(i=>{
-const availMinMonth=i.workers*i.days*i.hoursPerDay*60;
-const usedMin=i.stMin*i.monthOrder;
-const rate=availMinMonth>0?Math.round(usedMin/availMinMonth*100):0;
-return{...i,avail:availMinMonth,used:usedMin,rate};});
+const capaQty=i.dailyCap*i.workers*i.days;
+const planQty=i.monthOrder;
+const rate=capaQty>0?Math.round(planQty/capaQty*100):0;
+return{...i,avail:capaQty,used:planQty,rate};});
 }else{
 loadData=filtered.map(i=>{
 const avail=i.workers*i.days*i.hoursPerDay*3600;
@@ -563,14 +563,14 @@ return{...i,avail,used,rate};});}
 if(!chartLoad)chartLoad=echarts.init(document.getElementById('loadChart'),null,{renderer:'canvas'});
 const colors=loadData.map(i=>i.rate<=80?'#34D399':i.rate<=100?'#FBBF24':'#F87171');
 const maxRate=Math.max(130,...loadData.map(i=>i.rate),10);
-chartLoad.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12},formatter:p=>{const i=loadData[p[0].dataIndex];if(hasStMin){return i.item+'<br/>부하율: '+i.rate+'%<br/>단위ST: '+i.stMin+'분/EA × '+i.monthOrder+'EA = '+i.used+'분<br/>월 가용: '+i.avail+'분 ('+i.workers+'명×'+i.days+'일×'+i.hoursPerDay+'h)';}return i.item+' ('+i.cat+')<br/>부하율: '+i.rate+'%<br/>ST: '+i.st+'초 × '+i.weekProd+'개 = '+(i.used/3600).toFixed(1)+'시간<br/>가용시간: '+(i.avail/3600).toFixed(0)+'시간 ('+i.workers+'명×'+i.days+'일×'+i.hoursPerDay+'h)';}},grid:{left:90,right:70,top:20,bottom:30},xAxis:{type:'value',max:maxRate,axisLabel:{color:'#8B949E',fontSize:11,formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},yAxis:{type:'category',data:loadData.map(i=>i.item),axisLabel:{color:'#C9D1D9',fontSize:11}},series:[{type:'bar',data:loadData.map((i,idx)=>({value:i.rate,itemStyle:{color:colors[idx],borderRadius:[0,4,4,0]}})),label:{show:true,position:'right',color:'#C9D1D9',fontSize:11,formatter:p=>p.value+'%'}},{type:'line',data:Array(loadData.length).fill(80),symbol:'none',lineStyle:{color:'rgba(52,211,153,.5)',type:'dashed',width:1}},{type:'line',data:Array(loadData.length).fill(100),symbol:'none',lineStyle:{color:'rgba(248,113,113,.5)',type:'dashed',width:1.5}}]},true);
+chartLoad.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12},formatter:p=>{const i=loadData[p[0].dataIndex];if(hasStMin){return i.item+'<br/>부하율: '+i.rate+'%<br/>당월 계획수량: '+i.used+'개<br/>CAPA: '+i.avail.toFixed(1)+'개 (하루 '+i.dailyCap+'개×'+i.workers+'명×'+i.days+'일)';}return i.item+' ('+i.cat+')<br/>부하율: '+i.rate+'%<br/>ST: '+i.st+'초 × '+i.weekProd+'개 = '+(i.used/3600).toFixed(1)+'시간<br/>가용시간: '+(i.avail/3600).toFixed(0)+'시간 ('+i.workers+'명×'+i.days+'일×'+i.hoursPerDay+'h)';}},grid:{left:90,right:70,top:20,bottom:30},xAxis:{type:'value',max:maxRate,axisLabel:{color:'#8B949E',fontSize:11,formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},yAxis:{type:'category',data:loadData.map(i=>i.item),axisLabel:{color:'#C9D1D9',fontSize:11}},series:[{type:'bar',data:loadData.map((i,idx)=>({value:i.rate,itemStyle:{color:colors[idx],borderRadius:[0,4,4,0]}})),label:{show:true,position:'right',color:'#C9D1D9',fontSize:11,formatter:p=>p.value+'%'}},{type:'line',data:Array(loadData.length).fill(80),symbol:'none',lineStyle:{color:'rgba(52,211,153,.5)',type:'dashed',width:1}},{type:'line',data:Array(loadData.length).fill(100),symbol:'none',lineStyle:{color:'rgba(248,113,113,.5)',type:'dashed',width:1.5}}]},true);
 const lc=document.getElementById('loadCards');lc.innerHTML='';
 loadData.forEach(i=>{const color=i.rate<=80?'var(--emerald)':i.rate<=100?'var(--amber)':'var(--rose)';const barClass=i.rate<=80?'load-ok':i.rate<=100?'load-warn':'load-over';const card=document.createElement('div');card.className='card';card.style.padding='14px';
 if(hasStMin){
 card.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-size:11px;font-weight:700;color:var(--text-secondary);">'+i.item+'</div><div style="font-size:10px;color:var(--text-muted);">'+i.cat+'</div></div>'+
 '<div style="font-size:22px;font-weight:700;font-family:IBM Plex Sans,sans-serif;color:'+color+';margin-bottom:8px;">'+i.rate+'%</div>'+
 '<div class="load-bar-wrap"><div class="load-bar '+barClass+'" style="width:'+Math.min(i.rate,100)+'%;"></div></div>'+
-'<div style="margin-top:6px;font-size:10px;color:var(--text-muted);">ST '+i.stMin+'분/EA · 발주 '+i.monthOrder+'EA · '+i.workers+'명</div>';
+'<div style="margin-top:6px;font-size:10px;color:var(--text-muted);">CAPA '+i.avail.toFixed(1)+'개 · 계획 '+i.used+'개 · '+i.workers+'명</div>';
 }else{
 card.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-size:11px;font-weight:700;color:var(--text-secondary);">'+i.item+'</div><div style="font-size:10px;color:var(--text-muted);">'+i.cat+'</div></div>'+
 '<div style="font-size:22px;font-weight:700;font-family:IBM Plex Sans,sans-serif;color:'+color+';margin-bottom:8px;">'+i.rate+'%</div>'+
@@ -578,8 +578,8 @@ card.innerHTML='<div style="display:flex;justify-content:space-between;align-ite
 '<div style="margin-top:6px;font-size:10px;color:var(--text-muted);">ST '+i.st+'초 · '+i.weekProd+'개 · '+i.workers+'명</div>';}
 lc.appendChild(card);});
 const total=loadData.reduce((s,i)=>s+i.used,0);const totalAvail=loadData.reduce((s,i)=>s+i.avail,0);const totalRate=totalAvail>0?Math.round(total/totalAvail*100):0;const over=loadData.filter(i=>i.rate>100),warn=loadData.filter(i=>i.rate>80&&i.rate<=100);
-const unit=hasStMin?'분':'h';const totalU=hasStMin?Math.round(total):Math.round(total/3600);const totalAU=hasStMin?Math.round(totalAvail):Math.round(totalAvail/3600);
-document.getElementById('loadSummary').innerHTML='▶ '+(hasStMin?'이번달':'이번주')+' 전체 부하율: <strong style="color:'+(totalRate<=80?'var(--emerald)':totalRate<=100?'var(--amber)':'var(--rose)')+'">'+totalRate+'%</strong> · 가용 '+totalAU+unit+' 중 '+totalU+unit+' 사용'+(over.length?'<br/>⚠️ 과부하 품목: <span style="color:var(--rose)">'+over.map(i=>i.item).join(', ')+'</span>':'<br/>✅ 과부하 없음')+(warn.length?'<br/>🟡 주의 품목: <span style="color:var(--amber)">'+warn.map(i=>i.item).join(', ')+'</span>':'');}
+const unit=hasStMin?'개':'h';const totalU=hasStMin?Math.round(total):Math.round(total/3600);const totalAU=hasStMin?Math.round(totalAvail):Math.round(totalAvail/3600);
+document.getElementById('loadSummary').innerHTML='▶ '+(hasStMin?'이번달':'이번주')+' 전체 부하율: <strong style="color:'+(totalRate<=80?'var(--emerald)':totalRate<=100?'var(--amber)':'var(--rose)')+'">'+totalRate+'%</strong> · '+(hasStMin?'CAPA':'가용')+' '+totalAU+unit+' 중 '+totalU+unit+(hasStMin?' 계획':' 사용')+(over.length?'<br/>⚠️ 과부하 품목: <span style="color:var(--rose)">'+over.map(i=>i.item).join(', ')+'</span>':'<br/>✅ 과부하 없음')+(warn.length?'<br/>🟡 주의 품목: <span style="color:var(--amber)">'+warn.map(i=>i.item).join(', ')+'</span>':'');}
 </script>
 <script>
 function renderLoadProcess(d){
