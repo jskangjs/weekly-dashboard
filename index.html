@@ -207,7 +207,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <div id="loadProcessChart" style="height:220px;"></div>
 <div class="pg-grid" id="loadProcessCards"></div>
 <table class="st-table" id="loadStTable">
-<thead><tr><th>제품</th><th>단위 ST(분/EA)</th><th>레이저웰딩</th><th>디스펜싱</th><th>납땜</th><th>일반공정</th><th>월 발주량(EA)</th><th>총 필요시간(분)</th></tr></thead>
+<thead><tr><th>제품</th><th>단위 ST(분/EA)</th><th>레이저웰딩</th><th>디스펜싱</th><th>납땜</th><th>일반공정</th><th>월 계획수량(EA)</th><th>총 필요시간(분)</th></tr></thead>
 <tbody id="loadStTableBody"></tbody>
 </table>
 </div>
@@ -293,12 +293,12 @@ stock:[
 {cat:'ENBD',current:95,safety:80},
 {cat:'EPO Probe',current:60,safety:50}],
 stItems:[
-{cat:'EP',item:'EP 4극',stMin:85,dailyCap:5.2,laserWeld:15,dispense:10,solder:5,general:55,monthOrder:17,workers:2,days:22,hoursPerDay:8},
-{cat:'EP',item:'EP 10극',stMin:134,dailyCap:3.3,laserWeld:35,dispense:20,solder:15,general:64,monthOrder:35,workers:2,days:22,hoursPerDay:8},
-{cat:'EP',item:'EP 13극',stMin:173,dailyCap:2.5,laserWeld:52,dispense:25,solder:20,general:76,monthOrder:4,workers:2,days:22,hoursPerDay:8},
-{cat:'Duodeca',item:'DUO DECA',stMin:275,dailyCap:1.6,laserWeld:80,dispense:30,solder:20,general:145,monthOrder:5,workers:3,days:22,hoursPerDay:8},
-{cat:'ENBD',item:'ENBD',stMin:69,dailyCap:6.4,laserWeld:5,dispense:0,solder:0,general:64,monthOrder:4,workers:2,days:22,hoursPerDay:8},
-{cat:'EPO Probe',item:'EPO Probe',stMin:58,dailyCap:7.6,laserWeld:0,dispense:0,solder:0,general:58,monthOrder:0,workers:1,days:22,hoursPerDay:8}],
+{cat:'EP',item:'EP 4극',stMin:85,dailyCap:5.2,laserWeld:15,dispense:10,solder:5,general:55,monthOrder:17,planQty:160,workers:2,days:22,hoursPerDay:8},
+{cat:'EP',item:'EP 10극',stMin:134,dailyCap:3.3,laserWeld:35,dispense:20,solder:15,general:64,monthOrder:35,planQty:100,workers:2,days:22,hoursPerDay:8},
+{cat:'EP',item:'EP 13극',stMin:173,dailyCap:2.5,laserWeld:52,dispense:25,solder:20,general:76,monthOrder:4,planQty:50,workers:2,days:22,hoursPerDay:8},
+{cat:'Duodeca',item:'DUO DECA',stMin:275,dailyCap:1.6,laserWeld:80,dispense:30,solder:20,general:145,monthOrder:5,planQty:200,workers:3,days:22,hoursPerDay:8},
+{cat:'ENBD',item:'ENBD',stMin:69,dailyCap:6.4,laserWeld:5,dispense:0,solder:0,general:64,monthOrder:4,planQty:200,workers:2,days:22,hoursPerDay:8},
+{cat:'EPO Probe',item:'EPO Probe',stMin:58,dailyCap:7.6,laserWeld:0,dispense:0,solder:0,general:58,monthOrder:0,planQty:0,workers:1,days:22,hoursPerDay:8}],
 processGroups:[
 {name:'레이저웰딩',workers:4,equipment:4,daysPerMonth:22,hoursPerDay:8,availMin:38720,comment:'장비 4EA 제약. 초과 시 잔업/추가 장비 검토'},
 {name:'디스펜싱',workers:2,equipment:2,daysPerMonth:22,hoursPerDay:8,availMin:19360,comment:'장비 2EA·인원 2명 모두 제약. 교차훈련 우선'},
@@ -572,12 +572,9 @@ const filtered=selectedCats.length?d.stItems.filter(i=>selectedCats.includes(i.c
 const hasStMin=filtered.length&&filtered[0].stMin!==undefined;
 let loadData;
 if(hasStMin){
-const inProg=d.months.find(m=>m.status==='진행중')||d.months[d.months.length-1];
-const mPlan=inProg?inProg.plan:0;
-const totalOrd=d.stItems.reduce((s,i)=>s+i.monthOrder,0);
 loadData=filtered.map(i=>{
 const capaQty=i.dailyCap*i.workers*i.days;
-const planQty=totalOrd>0?Math.round(mPlan*i.monthOrder/totalOrd):i.monthOrder;
+const planQty=i.planQty!=null?i.planQty:i.monthOrder;
 const rate=capaQty>0?Math.round(planQty/capaQty*100):0;
 return{...i,avail:capaQty,used:planQty,rate};});
 }else{
@@ -618,9 +615,8 @@ const pgReqMin={};
 pgNames.forEach(pg=>{pgReqMin[pg]=0;});
 const _inProg=d.months.find(m=>m.status==='진행중')||d.months[d.months.length-1];
 const _mPlan=_inProg?_inProg.plan:0;
-const _totalOrd=d.stItems.reduce((s,i)=>s+i.monthOrder,0);
 filtered.forEach(item=>{
-const _pQty=_totalOrd>0?Math.round(_mPlan*item.monthOrder/_totalOrd):item.monthOrder;
+const _pQty=item.planQty!=null?item.planQty:item.monthOrder;
 pgReqMin['레이저웰딩']+=(item.laserWeld||0)*_pQty;
 pgReqMin['디스펜싱']+=(item.dispense||0)*_pQty;
 pgReqMin['납땜']+=(item.solder||0)*_pQty;
@@ -655,7 +651,7 @@ card.innerHTML=
 pc.appendChild(card);});
 const tb=document.getElementById('loadStTableBody');tb.innerHTML='';
 filtered.forEach(item=>{
-const _pQ2=_totalOrd>0?Math.round(_mPlan*item.monthOrder/_totalOrd):item.monthOrder;const totalReq=(item.laserWeld||0)*_pQ2+(item.dispense||0)*_pQ2+(item.solder||0)*_pQ2+(item.general||0)*_pQ2;
+const _pQ2=item.planQty!=null?item.planQty:item.monthOrder;const totalReq=(item.laserWeld||0)*_pQ2+(item.dispense||0)*_pQ2+(item.solder||0)*_pQ2+(item.general||0)*_pQ2;
 const tr=document.createElement('tr');
 tr.innerHTML='<td style="font-weight:600;color:var(--text-secondary);">'+item.item+'</td>'+
 '<td style="text-align:center;font-weight:700;color:var(--violet);font-family:IBM Plex Sans,sans-serif;">'+item.stMin+'</td>'+
@@ -663,10 +659,10 @@ tr.innerHTML='<td style="font-weight:600;color:var(--text-secondary);">'+item.it
 '<td style="text-align:center;color:var(--text-secondary);">'+(item.dispense||0)+'</td>'+
 '<td style="text-align:center;color:var(--text-secondary);">'+(item.solder||0)+'</td>'+
 '<td style="text-align:center;color:var(--text-secondary);">'+(item.general||0)+'</td>'+
-'<td style="text-align:center;color:var(--amber);font-family:IBM Plex Sans,sans-serif;">'+(_totalOrd>0?Math.round(_mPlan*item.monthOrder/_totalOrd):item.monthOrder)+'</td>'+
+'<td style="text-align:center;color:var(--amber);font-family:IBM Plex Sans,sans-serif;">'+(item.planQty!=null?item.planQty:item.monthOrder)+'</td>'+
 '<td style="text-align:center;color:var(--sky);font-family:IBM Plex Sans,sans-serif;font-weight:700;">'+totalReq.toLocaleString()+'</td>';
 tb.appendChild(tr);});
-const totalReqAll=filtered.reduce((s,i)=>{const _pQ3=_totalOrd>0?Math.round(_mPlan*i.monthOrder/_totalOrd):i.monthOrder;return s+(i.laserWeld||0)*_pQ3+(i.dispense||0)*_pQ3+(i.solder||0)*_pQ3+(i.general||0)*_pQ3;},0);
+const totalReqAll=filtered.reduce((s,i)=>{const _pQ3=i.planQty!=null?i.planQty:i.monthOrder;return s+(i.laserWeld||0)*_pQ3+(i.dispense||0)*_pQ3+(i.solder||0)*_pQ3+(i.general||0)*_pQ3;},0);
 const totalAvailAll=d.processGroups.reduce((s,pg)=>s+pg.availMin,0);
 const totalRate=totalAvailAll>0?Math.round(totalReqAll/totalAvailAll*100):0;
 const over=pgData.filter(i=>i.rate>100),warn=pgData.filter(i=>i.rate>80&&i.rate<=100);
@@ -688,7 +684,7 @@ if(lacking.length)lines.push('⚠️ 안전재고 부족 품목군('+lacking.map
 if(d.processGroups){
 const filtered=d.stItems.filter(i=>selectedCats.includes(i.cat)&&(!selectedItems.length||selectedItems.includes(i.item)));
 const pgReq={};['레이저웰딩','디스펜싱','납땜','일반공정'].forEach(pg=>{pgReq[pg]=0;});
-filtered.forEach(item=>{pgReq['레이저웰딩']+=(item.laserWeld||0)*item.monthOrder;pgReq['디스펜싱']+=(item.dispense||0)*item.monthOrder;pgReq['납땜']+=(item.solder||0)*item.monthOrder;pgReq['일반공정']+=(item.general||0)*item.monthOrder;});
+filtered.forEach(item=>{const q=item.planQty!=null?item.planQty:item.monthOrder;pgReq['레이저웰딩']+=(item.laserWeld||0)*q;pgReq['디스펜싱']+=(item.dispense||0)*q;pgReq['납땜']+=(item.solder||0)*q;pgReq['일반공정']+=(item.general||0)*q;});
 const overPG=d.processGroups.filter(pg=>pg.availMin>0&&pgReq[pg.name]/pg.availMin>1);
 if(overPG.length)lines.push('⏱️ 공정 과부하('+overPG.map(p=>p.name).join(', ')+') — 인원 재배치 또는 잔업 계획 수립 권고.');
 else lines.push('⏱️ 현장 공정 부하율 정상 범위 — 모든 공정 여유 상태.');}
