@@ -549,9 +549,12 @@ const filtered=selectedCats.length?d.stItems.filter(i=>selectedCats.includes(i.c
 const hasStMin=filtered.length&&filtered[0].stMin!==undefined;
 let loadData;
 if(hasStMin){
+const inProg=d.months.find(m=>m.status==='진행중')||d.months[d.months.length-1];
+const mPlan=inProg?inProg.plan:0;
+const totalOrd=d.stItems.reduce((s,i)=>s+i.monthOrder,0);
 loadData=filtered.map(i=>{
 const capaQty=i.dailyCap*i.workers*i.days;
-const planQty=i.monthOrder;
+const planQty=totalOrd>0?Math.round(mPlan*i.monthOrder/totalOrd):i.monthOrder;
 const rate=capaQty>0?Math.round(planQty/capaQty*100):0;
 return{...i,avail:capaQty,used:planQty,rate};});
 }else{
