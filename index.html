@@ -715,17 +715,18 @@ function _parseCSVLine(line){
   r.push(cur);return r;
 }
 function _sheetNum(v){if(!v)return 0;const n=parseInt(v.toString().replace(/[^0-9-]/g,''));return isNaN(n)?0:n;}
-async function fetchStockFromSheet(){
+async function fetchSheetData(){
   try{
     const res=await fetch(SHEET_STOCK_URL);
     if(!res.ok)throw new Error('HTTP '+res.status);
     const text=await res.text();
+    const allRows=text.split('\n').filter(l=>l.trim()).map(_parseCSVLine);
+    if(allRows.length<3)return null;
+    const headerRow=allRows[0]; // row 1: 컬럼 레이블
+    const dataRow=allRows[2];   // row 3: 전품목 합계
+    // ── 안전재고 ──────────────────────────────────────────────────────────────
     const rowMap={};
-    text.split('\n').forEach(line=>{
-      const cols=_parseCSVLine(line);
-      const key=cols[0]?.trim();
-      if(key)rowMap[key]=cols;
-    });
+    allRows.forEach(r=>{const k=r[0]?.trim();if(k)rowMap[k]=r;});
     const stock=[];
     for(const m of STOCK_MAP){
       if(m.row){
@@ -737,14 +738,46 @@ async function fetchStockFromSheet(){
         if(safety||current)stock.push({cat:m.cat,safety,current});
       }
     }
-    return stock.length?stock:null;
-  }catch(e){console.warn('재고 시트 연동 실패, 기본값 사용:',e);return null;}
+    // ── 월별 계획 — row 1 에서 "N월 계획" 레이블을 찾아 전품목 행 값을 읽음 ────
+    const planMap={};
+    headerRow.forEach((cell,idx)=>{
+      const m=cell.trim().match(/^(\d+)월\s*계획$/);
+      if(m){
+        const v=_sheetNum(dataRow[idx]);
+        if(v>0)planMap[parseInt(m[1])]=v;
+      }
+    });
+    return{stock:stock.length?stock:null, planMap};
+  }catch(e){console.warn('시트 연동 실패, 기본값 사용:',e);return null;}
 }
 // ─────────────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded',async()=>{
 document.getElementById('nowTime').textContent=nowTime();
-const freshStock=await fetchStockFromSheet();
-if(freshStock)DATA_2.stock=freshStock;
+const sheetData=await fetchSheetData();
+if(sheetData){
+  // 안전재고 업데이트
+  if(sheetData.stock)DATA_2.stock=sheetData.stock;
+  // 월별 계획 업데이트
+  if(sheetData.planMap&&Object.keys(sheetData.planMap).length){
+    const now=new Date();
+    const curMonth=now.getMonth()+1;
+    const existingNums=new Set(DATA_2.months.map(m=>parseInt(m.month)));
+    // 기존 월 plan 값 갱신 + status 자동 계산
+    DATA_2.months.forEach(m=>{
+      const n=parseInt(m.month);
+      if(sheetData.planMap[n])m.plan=sheetData.planMap[n];
+      m.status=n<curMonth?'마감':n===curMonth?'진행중':'예정';
+    });
+    // 시트에는 있지만 코드에 없는 월 자동 추가
+    Object.entries(sheetData.planMap).forEach(([ns,plan])=>{
+      const n=parseInt(ns);
+      if(!existingNums.has(n)&&n<=curMonth){
+        DATA_2.months.push({month:n+'월',status:n<curMonth?'마감':'진행중',plan,actual:null,sofar:0});
+        DATA_2.months.sort((a,b)=>parseInt(a.month)-parseInt(b.month));
+      }
+    });
+  }
+}
 render();
 window.addEventListener('resize',()=>{[chartMain,chartPlan,chartStock,chartLoad,chartLoadProcess].forEach(c=>c&&c.resize());});});
 </script>
