@@ -287,13 +287,11 @@ behind:[
 {cat:'EP',item:'SM604DBA',plan:10,actual:0},
 {cat:'EP',item:'SM504BBA',plan:100,actual:7},
 {cat:'Duodeca',item:'SM720SJD',plan:200,actual:97}],
-/* ▼▼▼ 안전재고 데이터 수정 구역 — current: 현재고, safety: 안전재고 기준 ▼▼▼ */
 stock:[
 {cat:'EP',current:1272,safety:1020},
 {cat:'Duodeca',current:212,safety:200},
 {cat:'ENBD',current:475,safety:80},
 {cat:'EPO Probe',current:60,safety:50}],
-/* ▲▲▲ 안전재고 데이터 수정 구역 끝 ▲▲▲ */
 stItems:[
 {cat:'EP',item:'EP 4극',stMin:85,dailyCap:5.2,laserWeld:15,dispense:10,solder:5,general:55,monthOrder:17,planQty:160,workers:2,days:22,hoursPerDay:8},
 {cat:'EP',item:'EP 10극',stMin:134,dailyCap:3.3,laserWeld:35,dispense:20,solder:15,general:64,monthOrder:35,planQty:100,workers:2,days:22,hoursPerDay:8},
@@ -695,8 +693,57 @@ const filtST=d.stItems.filter(i=>selectedCats.includes(i.cat)&&(!selectedItems.l
 if(overloaded.length)lines.push('⏱️ 과부하 품목('+overloaded.map(i=>i.item).join(', ')+') 발생 — 인원 재배치 또는 잔업 계획 수립 권고.');
 else lines.push('⏱️ 현장 부하율 정상 범위 — 추가 물량 수용 여력 있음.');}
 insightEl.innerHTML=lines.map(l=>'<div style="display:flex;gap:8px;margin-bottom:4px;"><span style="color:var(--indigo);font-size:9px;margin-top:4px;flex-shrink:0;">▶</span><span>'+l+'</span></div>').join('');}
-document.addEventListener('DOMContentLoaded',()=>{
+// ── Google Sheets 안전재고 자동 연동 ──────────────────────────────────────
+const SHEET_STOCK_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vQBDlCaA6Wsxlln7ppRoVzUvjH-fI6t0zHTMY9Ex8SyEozgdBFgU4OwqQcs43Y8NYYrCTwADPIAQ6Di/pub?gid=680125344&single=true&output=csv';
+// 대시보드 품목군 → 시트 행 매핑
+// row: 시트 A열 값 그대로 매핑 / rows: 여러 모델 합산
+const STOCK_MAP=[
+  {cat:'EP',       row:'EP'},
+  {cat:'Duodeca',  rows:['SM720SJD','SM720SOD']},
+  {cat:'ENBD',     row:'ENBD'},
+  {cat:'EPO Probe',row:'EPO Probe'},
+];
+function _parseCSVLine(line){
+  const r=[];let q=false,cur='';
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c==='"'){q=!q;}
+    else if(c===','&&!q){r.push(cur);cur='';}
+    else{cur+=c;}
+  }
+  r.push(cur);return r;
+}
+function _sheetNum(v){if(!v)return 0;const n=parseInt(v.toString().replace(/[^0-9-]/g,''));return isNaN(n)?0:n;}
+async function fetchStockFromSheet(){
+  try{
+    const res=await fetch(SHEET_STOCK_URL);
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const text=await res.text();
+    const rowMap={};
+    text.split('\n').forEach(line=>{
+      const cols=_parseCSVLine(line);
+      const key=cols[0]?.trim();
+      if(key)rowMap[key]=cols;
+    });
+    const stock=[];
+    for(const m of STOCK_MAP){
+      if(m.row){
+        const r=rowMap[m.row];
+        if(r)stock.push({cat:m.cat,safety:_sheetNum(r[4]),current:_sheetNum(r[7])});
+      }else if(m.rows){
+        let safety=0,current=0;
+        m.rows.forEach(name=>{const r=rowMap[name];if(r){safety+=_sheetNum(r[4]);current+=_sheetNum(r[7]);}});
+        if(safety||current)stock.push({cat:m.cat,safety,current});
+      }
+    }
+    return stock.length?stock:null;
+  }catch(e){console.warn('재고 시트 연동 실패, 기본값 사용:',e);return null;}
+}
+// ─────────────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',async()=>{
 document.getElementById('nowTime').textContent=nowTime();
+const freshStock=await fetchStockFromSheet();
+if(freshStock)DATA_2.stock=freshStock;
 render();
 window.addEventListener('resize',()=>{[chartMain,chartPlan,chartStock,chartLoad,chartLoadProcess].forEach(c=>c&&c.resize());});});
 </script>
