@@ -16,16 +16,16 @@
 --indigo:#7C6FCD;--violet:#A78BFA;--emerald:#34D399;--rose:#F87171;--amber:#FBBF24;--sky:#38BDF8;--teal:#2DD4BF;--coral:#FB923C;
 }
 *{box-sizing:border-box;}
-html,body{margin:0;padding:0;background:var(--bg-deep);color:var(--text-primary);font-family:'Pretendard',-apple-system,sans-serif;font-size:13px;}
+html,body{margin:0;padding:0;background:var(--bg-deep);color:var(--text-primary);font-family:'Pretendard',-apple-system,sans-serif;font-size:15px;}
 body{background:radial-gradient(ellipse 80% 40% at 20% 0%,rgba(124,111,205,.12),transparent),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(52,211,153,.08),transparent),var(--bg-deep);min-height:100vh;}
 .num{font-family:IBM Plex Sans,sans-serif;font-variant-numeric:tabular-nums;}
 .card{background:linear-gradient(135deg,var(--bg-card),var(--bg-card-hi));border:1px solid var(--border);border-radius:12px;padding:20px;}
 .header{position:sticky;top:0;z-index:50;background:rgba(13,17,23,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 28px;}
-.btn{padding:6px 14px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text-secondary);transition:all .18s;}
+.btn{padding:6px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text-secondary);transition:all .18s;}
 .btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);}
 .btn.active{background:linear-gradient(135deg,rgba(124,111,205,.3),rgba(124,111,205,.1));border-color:var(--indigo);color:var(--violet);}
 .btn[data-dept="2반"].active{background:linear-gradient(135deg,rgba(248,113,113,.25),rgba(248,113,113,.08));border-color:var(--rose);color:var(--rose);}
-.chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid;transition:all .1s;user-select:none;line-height:1.4;}
+.chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid;transition:all .1s;user-select:none;line-height:1.4;}
 .chip-year{color:var(--violet);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.05);}
 .chip-year.active{background:rgba(167,139,250,.2);border-color:var(--violet);box-shadow:0 0 8px rgba(167,139,250,.25);}
 .chip-month{color:var(--sky);border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.05);}
@@ -36,19 +36,19 @@ body{background:radial-gradient(ellipse 80% 40% at 20% 0%,rgba(124,111,205,.12),
 .chip-cat.active{background:rgba(251,191,36,.2);border-color:var(--amber);box-shadow:0 0 8px rgba(251,191,36,.25);}
 .chip-item{color:var(--text-secondary);border-color:rgba(139,148,158,.3);background:rgba(139,148,158,.05);}
 .chip-item.active{background:rgba(56,189,248,.18);border-color:var(--sky);color:var(--sky);box-shadow:0 0 8px rgba(56,189,248,.2);}
-.kpi-label{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;}
-.kpi-val{font-size:26px;font-weight:700;font-family:IBM Plex Sans,sans-serif;font-variant-numeric:tabular-nums;line-height:1.15;}
-.kpi-sub{font-size:11px;color:var(--text-secondary);margin-top:5px;}
+.kpi-label{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;}
+.kpi-val{font-size:29px;font-weight:700;font-family:IBM Plex Sans,sans-serif;font-variant-numeric:tabular-nums;line-height:1.15;}
+.kpi-sub{font-size:12px;color:var(--text-secondary);margin-top:5px;}
 .up{color:var(--emerald);}.down{color:var(--rose);}
 table.exec th,table.exec td{padding:8px 12px;}
-table.exec thead th{background:rgba(255,255,255,.03);color:var(--text-muted);font-size:11px;font-weight:600;text-align:left;border-bottom:1px solid var(--border);}
+table.exec thead th{background:rgba(255,255,255,.03);color:var(--text-muted);font-size:12px;font-weight:600;text-align:left;border-bottom:1px solid var(--border);}
 table.exec tbody tr{border-bottom:1px solid rgba(255,255,255,.04);}
 table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 .filter-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:3px 0;}
-.filter-label{font-size:11px;font-weight:700;color:var(--text-muted);min-width:44px;}
+.filter-label{font-size:12px;font-weight:700;color:var(--text-muted);min-width:44px;}
 .filter-grid{display:flex;flex-wrap:wrap;gap:4px;flex:1;user-select:none;}
-.insight-box{background:linear-gradient(135deg,rgba(124,111,205,.08),rgba(52,211,153,.04));border:1px solid rgba(124,111,205,.35);border-left:3px solid var(--indigo);border-radius:10px;padding:16px 20px;font-size:12px;line-height:1.9;}
-.insight-title{font-size:11px;font-weight:700;color:var(--violet);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.insight-box{background:linear-gradient(135deg,rgba(124,111,205,.08),rgba(52,211,153,.04));border:1px solid rgba(124,111,205,.35);border-left:3px solid var(--indigo);border-radius:10px;padding:16px 20px;font-size:13px;line-height:1.9;}
+.insight-title{font-size:12px;font-weight:700;color:var(--violet);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
 .load-bar-wrap{height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
 .load-bar{height:100%;border-radius:4px;transition:width .6s ease;}
 .load-ok{background:linear-gradient(90deg,var(--emerald),#059669);}
@@ -57,20 +57,20 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 .score-section{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
 .score-card{background:linear-gradient(135deg,var(--bg-card),var(--bg-card-hi));border:1px solid var(--border);border-radius:10px;padding:14px 18px;position:relative;overflow:hidden;}
 .score-card::before{content:'';position:absolute;inset:0;border-radius:10px;opacity:.06;background:var(--accent-color,#7C6FCD);pointer-events:none;}
-.score-badge{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:4px;display:inline-block;margin-bottom:8px;}
-.score-num{font-family:IBM Plex Sans,sans-serif;font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;line-height:1.1;}
-.score-label{font-size:10px;color:var(--text-muted);margin-top:3px;font-weight:600;letter-spacing:.04em;}
-.score-delta{font-size:11px;margin-top:6px;}
+.score-badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:4px;display:inline-block;margin-bottom:8px;}
+.score-num{font-family:IBM Plex Sans,sans-serif;font-variant-numeric:tabular-nums;font-size:25px;font-weight:700;line-height:1.1;}
+.score-label{font-size:11px;color:var(--text-muted);margin-top:3px;font-weight:600;letter-spacing:.04em;}
+.score-delta{font-size:12px;margin-top:6px;}
 .pg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px;}
 .pg-card{background:linear-gradient(135deg,var(--bg-card),var(--bg-card-hi));border:1px solid var(--border);border-radius:10px;padding:14px 18px;}
-.st-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px;}
-.st-table th{background:rgba(255,255,255,.03);color:var(--text-muted);font-size:10px;font-weight:600;text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);}
+.st-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
+.st-table th{background:rgba(255,255,255,.03);color:var(--text-muted);font-size:11px;font-weight:600;text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);}
 .st-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text-secondary);}
 .st-table tr:hover td{background:rgba(255,255,255,.02);}
 .btn[data-dept="용접"].active{background:linear-gradient(135deg,rgba(251,146,60,.25),rgba(251,146,60,.08));border-color:var(--coral);color:var(--coral);}
 .weld-2col{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:14px;}
 .weld-panel{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
-.weld-panel-t{font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;}
+.weld-panel-t{font-size:13px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;}
 .weld-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
 </style>
 </head>
@@ -78,11 +78,11 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <header class="header">
 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
 <div>
-<h1 id="dashTitle" style="font-size:17px;font-weight:800;margin:0;letter-spacing:-.02em;">생산1반 주간 변동 현황</h1>
-<div style="font-size:11px;color:var(--text-muted);margin-top:2px;"><span id="nowTime"></span> 기준 · 드래그로 다중 선택/해제</div>
+<h1 id="dashTitle" style="font-size:19px;font-weight:800;margin:0;letter-spacing:-.02em;">생산1반 주간 변동 현황</h1>
+<div style="font-size:12px;color:var(--text-muted);margin-top:2px;"><span id="nowTime"></span> 기준 · 드래그로 다중 선택/해제</div>
 </div>
 <div style="display:flex;gap:8px;align-items:center;">
-<span style="font-size:11px;color:var(--text-muted);">부서</span>
+<span style="font-size:12px;color:var(--text-muted);">부서</span>
 <button class="btn active" data-dept="1반" onclick="setDept('1반')">1반 (액상)</button>
 <button class="btn" data-dept="2반" onclick="setDept('2반')">2반 (카테터)</button>
 <button class="btn" data-dept="용접" onclick="setDept('용접')">용접</button>
@@ -91,25 +91,25 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <div id="weldFilters" style="display:none;margin-top:10px;flex-direction:column;gap:5px;"><div class="filter-row"><span class="filter-label">월</span><div class="filter-grid" id="weldMonthChips"></div></div><div class="filter-row"><span class="filter-label">호기</span><div class="filter-grid" id="weldMachineChips"></div></div></div>
 <div id="mainFilters" style="margin-top:10px;display:flex;flex-direction:column;gap:5px;">
 <div class="filter-row"><span class="filter-label">연도</span><div class="filter-grid" id="yearChips"></div></div>
-<div class="filter-row"><span class="filter-label">월</span><div class="filter-grid" id="monthChips"></div><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="selectAllMonths()">전체</button><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="selectRecentMonths()">최근 3개월</button></div>
-<div class="filter-row"><span class="filter-label">주차</span><div class="filter-grid" id="weekChips"></div><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="selectAllWeeks()">전체</button></div>
-<div class="filter-row"><span class="filter-label">품목군</span><div class="filter-grid" id="catChips"></div><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="selectAllCats()">전체</button><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="clearCats()">해제</button></div>
+<div class="filter-row"><span class="filter-label">월</span><div class="filter-grid" id="monthChips"></div><button class="btn" style="font-size:11px;padding:3px 9px;" onclick="selectAllMonths()">전체</button><button class="btn" style="font-size:11px;padding:3px 9px;" onclick="selectRecentMonths()">최근 3개월</button></div>
+<div class="filter-row"><span class="filter-label">주차</span><div class="filter-grid" id="weekChips"></div><button class="btn" style="font-size:11px;padding:3px 9px;" onclick="selectAllWeeks()">전체</button></div>
+<div class="filter-row"><span class="filter-label">품목군</span><div class="filter-grid" id="catChips"></div><button class="btn" style="font-size:11px;padding:3px 9px;" onclick="selectAllCats()">전체</button><button class="btn" style="font-size:11px;padding:3px 9px;" onclick="clearCats()">해제</button></div>
 <div class="filter-row" id="itemFilterRow" style="display:none;"><span class="filter-label">제품</span><div class="filter-grid" id="itemChips"></div></div>
 </div>
 </header>
 <main id="mainView" style="padding:20px 28px;display:flex;flex-direction:column;gap:16px;">
-<div id="filterSummary" style="font-size:11px;color:var(--text-muted);padding:0 2px;"></div>
+<div id="filterSummary" style="font-size:12px;color:var(--text-muted);padding:0 2px;"></div>
 <section>
-<div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+<div style="font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
 <span style="width:3px;height:12px;border-radius:2px;background:var(--violet);display:inline-block;"></span>
-연 누적 실적 <span id="yearScoreLabel" style="font-weight:400;font-size:10px;color:var(--text-muted);text-transform:none;"></span>
+연 누적 실적 <span id="yearScoreLabel" style="font-weight:400;font-size:11px;color:var(--text-muted);text-transform:none;"></span>
 </div>
 <div class="score-section" id="yearScoreBoard"></div>
 </section>
 <section>
-<div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+<div style="font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
 <span style="width:3px;height:12px;border-radius:2px;background:var(--teal);display:inline-block;"></span>
-당월 실적 <span id="monthScoreLabel" style="font-weight:400;font-size:10px;color:var(--text-muted);text-transform:none;"></span>
+당월 실적 <span id="monthScoreLabel" style="font-weight:400;font-size:11px;color:var(--text-muted);text-transform:none;"></span>
 </div>
 <div class="score-section" id="monthScoreBoard"></div>
 </section>
@@ -126,7 +126,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <div class="kpi-label">최근주 수주</div>
 <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px;">
 <div class="kpi-val" id="kpiOrdersVal" style="color:var(--amber);">—</div>
-<div id="kpiOrdersWeek" style="font-size:11px;color:var(--text-muted);"></div>
+<div id="kpiOrdersWeek" style="font-size:12px;color:var(--text-muted);"></div>
 </div>
 <div class="kpi-sub" id="kpiOrdersDelta"></div>
 </div>
@@ -134,7 +134,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <div class="kpi-label">최근주 생산</div>
 <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px;">
 <div class="kpi-val" id="kpiProdVal" style="color:var(--sky);">—</div>
-<div id="kpiProdWeek" style="font-size:11px;color:var(--text-muted);"></div>
+<div id="kpiProdWeek" style="font-size:12px;color:var(--text-muted);"></div>
 </div>
 <div class="kpi-sub" id="kpiProdDelta"></div>
 </div>
@@ -142,20 +142,20 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <div class="kpi-label">최근주 출고</div>
 <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px;">
 <div class="kpi-val" id="kpiShipVal" style="color:var(--emerald);">—</div>
-<div id="kpiShipWeek" style="font-size:11px;color:var(--text-muted);"></div>
+<div id="kpiShipWeek" style="font-size:12px;color:var(--text-muted);"></div>
 </div>
 <div class="kpi-sub" id="kpiShipDelta"></div>
 </div>
 </div>
 <div id="mainChart" style="height:260px;"></div>
-<div id="summaryComment" style="margin-top:12px;padding:11px 15px;background:rgba(251,191,36,.05);border-left:3px solid var(--amber);border-radius:6px;font-size:12px;line-height:1.85;"></div>
+<div id="summaryComment" style="margin-top:12px;padding:11px 15px;background:rgba(251,191,36,.05);border-left:3px solid var(--amber);border-radius:6px;font-size:13px;line-height:1.85;"></div>
 </section>
 <section class="insight-box">
-<div class="insight-title">🤖 AI 인사이트 <span style="font-weight:400;color:var(--text-muted);font-size:10px;text-transform:none;" id="insightFilterLabel"></span></div>
+<div class="insight-title">🤖 AI 인사이트 <span style="font-weight:400;color:var(--text-muted);font-size:11px;text-transform:none;" id="insightFilterLabel"></span></div>
 <div id="insightContent" style="color:var(--text-secondary);"></div>
 </section>
 <section class="card">
-<div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--text-secondary);">주차별 상세 — 전주 대비 · 동기간 비교</div>
+<div style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--text-secondary);">주차별 상세 — 전주 대비 · 동기간 비교</div>
 <div style="overflow-x:auto;">
 <table class="exec" style="width:100%;border-collapse:collapse;">
 <thead><tr><th>주차</th><th>수주</th><th>Δ주</th><th>생산</th><th>Δ주</th><th>출고</th><th>Δ주</th><th>불량률</th></tr></thead>
@@ -164,8 +164,8 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 </div>
 </section>
 <section class="card">
-<div style="font-size:13px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">월별 생산계획 대비 실적 진척도</div>
-<div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;">마감월은 달성률, 진행중월은 주차 누적 실적 기준 진척률</div>
+<div style="font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">월별 생산계획 대비 실적 진척도</div>
+<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">마감월은 달성률, 진행중월은 주차 누적 실적 기준 진척률</div>
 <div id="planChart" style="height:220px;"></div>
 <div style="overflow-x:auto;margin-top:12px;">
 <table class="exec" style="width:100%;border-collapse:collapse;">
@@ -175,8 +175,8 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 </div>
 </section>
 <section class="card">
-<div id="behindTitle" style="font-size:13px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);"></div>
-<div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;">진척률 100% 미만 — 낮은 순 정렬</div>
+<div id="behindTitle" style="font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);"></div>
+<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">진척률 100% 미만 — 낮은 순 정렬</div>
 <div style="overflow-x:auto;">
 <table class="exec" style="width:100%;border-collapse:collapse;">
 <thead><tr><th>품목군</th><th>품목</th><th>계획</th><th>실적</th><th>부족량</th><th>진척률</th></tr></thead>
@@ -185,18 +185,18 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 </div>
 </section>
 <section class="card">
-<div style="font-size:13px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">안전재고 확보율(%)</div>
-<div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;">품목군별 현재고 vs 안전재고</div>
+<div style="font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">안전재고 확보율(%)</div>
+<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">품목군별 현재고 vs 안전재고</div>
 <div id="stockChart" style="height:200px;"></div>
 <div id="stockAlert" style="margin-top:12px;"></div>
 </section>
 <section class="card">
 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
 <div>
-<div style="font-size:13px;font-weight:700;color:var(--text-secondary);">⏱️ CAPA 대비 부하율</div>
-<div style="font-size:11px;color:var(--text-muted);margin-top:2px;" id="loadSubtitle">품목별 당월 계획수량 ÷ CAPA(하루 생산가능수량×인원×가동일)</div>
+<div style="font-size:15px;font-weight:700;color:var(--text-secondary);">⏱️ CAPA 대비 부하율</div>
+<div style="font-size:12px;color:var(--text-muted);margin-top:2px;" id="loadSubtitle">품목별 당월 계획수량 ÷ CAPA(하루 생산가능수량×인원×가동일)</div>
 </div>
-<div style="display:flex;gap:12px;font-size:11px;color:var(--text-muted);align-items:center;flex-wrap:wrap;">
+<div style="display:flex;gap:12px;font-size:12px;color:var(--text-muted);align-items:center;flex-wrap:wrap;">
 <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--emerald);margin-right:4px;"></span>여유 (≤80%)</span>
 <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--amber);margin-right:4px;"></span>주의 (80~100%)</span>
 <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--rose);margin-right:4px;"></span>과부하 (&gt;100%)</span>
@@ -218,33 +218,33 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <tbody id="loadStTableBody"></tbody>
 </table>
 </div>
-<div id="loadSummary" style="margin-top:14px;padding:13px 16px;background:rgba(45,212,191,.05);border-left:3px solid var(--teal);border-radius:8px;font-size:12px;line-height:1.85;color:var(--text-secondary);"></div>
+<div id="loadSummary" style="margin-top:14px;padding:13px 16px;background:rgba(45,212,191,.05);border-left:3px solid var(--teal);border-radius:8px;font-size:13px;line-height:1.85;color:var(--text-secondary);"></div>
 </section>
 </main>
 <main id="weldView" style="display:none;padding:20px 28px;flex-direction:column;gap:16px;">
 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-<div id="weldStatus" style="font-size:11px;color:var(--text-muted);padding:0 2px;">데이터 불러오는 중…</div>
-<button class="btn" style="font-size:11px;padding:4px 10px;" onclick="loadWeld(true)">↻ 새로고침</button>
+<div id="weldStatus" style="font-size:12px;color:var(--text-muted);padding:0 2px;">데이터 불러오는 중…</div>
+<button class="btn" style="font-size:12px;padding:4px 10px;" onclick="loadWeld(true)">↻ 새로고침</button>
 </div>
 <section>
-<div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
-<span style="width:3px;height:12px;border-radius:2px;background:var(--violet);display:inline-block;"></span>연 누적 실적 <span style="font-weight:400;font-size:10px;">(연간 합계)</span>
+<div style="font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+<span style="width:3px;height:12px;border-radius:2px;background:var(--violet);display:inline-block;"></span>연 누적 실적 <span style="font-weight:400;font-size:11px;">(연간 합계)</span>
 </div>
 <div class="weld-grid" id="weldYearBoard"></div>
 </section>
 <section>
-<div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
-<span style="width:3px;height:12px;border-radius:2px;background:var(--coral);display:inline-block;"></span>월 실적 <span id="weldMonthLabel" style="font-weight:400;font-size:10px;"></span>
+<div style="font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+<span style="width:3px;height:12px;border-radius:2px;background:var(--coral);display:inline-block;"></span>월 실적 <span id="weldMonthLabel" style="font-weight:400;font-size:11px;"></span>
 </div>
 <div class="weld-grid" id="weldMonthBoard"></div>
 </section>
 <section id="weldMcSection" class="card" style="display:none;">
 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-<div style="font-size:15px;font-weight:800;" id="weldMcTitle"></div>
-<div style="font-size:11px;color:var(--text-muted);" id="weldMcSub"></div>
+<div style="font-size:17px;font-weight:800;" id="weldMcTitle"></div>
+<div style="font-size:12px;color:var(--text-muted);" id="weldMcSub"></div>
 </div>
 <div class="weld-grid" id="weldMcBoard"></div>
-<div id="weldMcComment" style="margin-top:12px;padding:11px 15px;border-radius:6px;font-size:12px;line-height:1.85;color:var(--text-secondary);"></div>
+<div id="weldMcComment" style="margin-top:12px;padding:11px 15px;border-radius:6px;font-size:13px;line-height:1.85;color:var(--text-secondary);"></div>
 <div class="weld-2col" style="margin-top:14px;">
 <div class="weld-panel"><div class="weld-panel-t">월별 생산실적 · 시간당 생산량 추이</div><div id="weldMcTrend" style="height:240px;"></div></div>
 <div class="weld-panel"><div class="weld-panel-t">월별 작업시간 구성 (정상 · 야근 · 휴가)</div><div id="weldMcHours" style="height:240px;"></div></div>
@@ -259,12 +259,12 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 </div>
 </section>
 <section class="insight-box" style="border-color:rgba(251,146,60,.35);border-left-color:var(--coral);">
-<div class="insight-title" style="color:var(--coral);">📌 요약 <span id="weldInsightLabel" style="font-weight:400;color:var(--text-muted);font-size:10px;"></span></div>
+<div class="insight-title" style="color:var(--coral);">📌 요약 <span id="weldInsightLabel" style="font-weight:400;color:var(--text-muted);font-size:11px;"></span></div>
 <div id="weldInsight" style="color:var(--text-secondary);"></div>
 </section>
 <section class="card">
-<div style="font-size:13px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">월별 계획 대비 실적</div>
-<div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">막대를 클릭하면 해당 월로 전환됩니다</div>
+<div style="font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">월별 계획 대비 실적</div>
+<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">막대를 클릭하면 해당 월로 전환됩니다</div>
 <div id="weldMonthChart" style="height:260px;"></div>
 <div style="overflow-x:auto;margin-top:12px;">
 <table class="exec" style="width:100%;border-collapse:collapse;">
@@ -274,8 +274,8 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 </div>
 </section>
 <section class="card">
-<div style="font-size:13px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">호기별 생산 실적</div>
-<div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">그래프: 월별 호기 실적 · 표: 선택한 월의 호기별 근무·생산</div>
+<div style="font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">호기별 생산 실적</div>
+<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">그래프: 월별 호기 실적 · 표: 선택한 월의 호기별 근무·생산</div>
 <div id="weldMachineChart" style="height:240px;"></div>
 <div style="overflow-x:auto;margin-top:12px;">
 <table class="exec" style="width:100%;border-collapse:collapse;">
@@ -285,7 +285,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 </div>
 </section>
 <section class="card">
-<div style="font-size:13px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">사이즈별 계획 대비 실적 <span id="weldSizeLabel" style="font-weight:400;font-size:11px;color:var(--text-muted);"></span></div>
+<div style="font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">사이즈별 계획 대비 실적 <span id="weldSizeLabel" style="font-weight:400;font-size:12px;color:var(--text-muted);"></span></div>
 <div id="weldSizeChart" style="height:240px;margin-top:8px;"></div>
 <div style="overflow-x:auto;margin-top:12px;">
 <table class="exec" style="width:100%;border-collapse:collapse;">
@@ -294,7 +294,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 </table>
 </div>
 </section>
-<div id="weldBasis" style="font-size:11px;color:var(--text-muted);padding:0 2px;"></div>
+<div id="weldBasis" style="font-size:12px;color:var(--text-muted);padding:0 2px;"></div>
 </main>
 <script>
 const DATA_1={deptName:'생산1반',deptSub:'(액상)',accentColor:'#FBBF24',
@@ -601,7 +601,7 @@ const field=currentTab==='orders'?'orders':currentTab==='prod'?'prod':'ship';
 const color=currentTab==='orders'?'#FBBF24':currentTab==='prod'?'#38BDF8':'#34D399';
 const vals=fw.map(w=>w[field]);
 if(!chartMain)chartMain=echarts.init(document.getElementById('mainChart'),null,{renderer:'canvas'});
-chartMain.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12}},grid:{left:50,right:20,top:30,bottom:40},xAxis:{type:'category',data:labels,axisLine:{lineStyle:{color:'#30363D'}},axisLabel:{color:'#8B949E',fontSize:11,rotate:30}},yAxis:{type:'value',axisLine:{show:false},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}},axisLabel:{color:'#8B949E',fontSize:11}},series:[{type:'line',data:vals,smooth:true,symbol:'circle',symbolSize:5,lineStyle:{color:color,width:2.5},itemStyle:{color:color},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:color+'44'},{offset:1,color:color+'05'}]}},label:{show:true,position:'top',color:color,fontSize:11,fontWeight:700,fontFamily:'IBM Plex Sans',formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}}]},true);}
+chartMain.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:13}},grid:{left:50,right:20,top:30,bottom:40},xAxis:{type:'category',data:labels,axisLine:{lineStyle:{color:'#30363D'}},axisLabel:{color:'#8B949E',fontSize:12,rotate:30}},yAxis:{type:'value',axisLine:{show:false},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}},axisLabel:{color:'#8B949E',fontSize:12}},series:[{type:'line',data:vals,smooth:true,symbol:'circle',symbolSize:5,lineStyle:{color:color,width:2.5},itemStyle:{color:color},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:color+'44'},{offset:1,color:color+'05'}]}},label:{show:true,position:'top',color:color,fontSize:12,fontWeight:700,fontFamily:'IBM Plex Sans',formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}}]},true);}
 function renderWeekTable(fw){
 const tb=document.getElementById('weekTableBody');tb.innerHTML='';
 [...fw].reverse().forEach((w,i)=>{
@@ -620,10 +620,10 @@ const plans=months.map(m=>m.plan);
 const actuals=months.map(m=>m.status==='마감'?m.actual:null);
 const sofars=months.map(m=>m.status==='진행중'?m.sofar:null);
 if(!chartPlan)chartPlan=echarts.init(document.getElementById('planChart'),null,{renderer:'canvas'});
-chartPlan.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12}},legend:{data:['계획','실적(마감)','실적(진행중)'],textStyle:{color:'#C9D1D9',fontSize:11},top:0},grid:{left:60,right:20,top:60,bottom:30},xAxis:{type:'category',data:names,axisLabel:{color:'#8B949E',fontSize:11},axisLine:{lineStyle:{color:'#30363D'}}},yAxis:{type:'value',axisLabel:{color:'#8B949E',fontSize:11},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},series:[{name:'계획',type:'bar',data:plans,itemStyle:{color:'rgba(139,148,158,.3)',borderRadius:[4,4,0,0]},label:{show:true,position:'top',color:'#8B949E',fontSize:10,fontFamily:'IBM Plex Sans',formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}},{name:'실적(마감)',type:'bar',data:actuals,itemStyle:{color:'#38BDF8',borderRadius:[4,4,0,0]},label:{show:true,position:'top',color:'#38BDF8',fontSize:10,fontFamily:'IBM Plex Sans',formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}},{name:'실적(진행중)',type:'bar',data:sofars,itemStyle:{color:'rgba(56,189,248,.4)',borderRadius:[4,4,0,0],borderColor:'#38BDF8',borderWidth:1},label:{show:true,position:'top',color:'rgba(56,189,248,.8)',fontSize:10,fontFamily:'IBM Plex Sans',formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}}]},true);
+chartPlan.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:13}},legend:{data:['계획','실적(마감)','실적(진행중)'],textStyle:{color:'#C9D1D9',fontSize:12},top:0},grid:{left:60,right:20,top:60,bottom:30},xAxis:{type:'category',data:names,axisLabel:{color:'#8B949E',fontSize:12},axisLine:{lineStyle:{color:'#30363D'}}},yAxis:{type:'value',axisLabel:{color:'#8B949E',fontSize:12},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},series:[{name:'계획',type:'bar',data:plans,itemStyle:{color:'rgba(139,148,158,.3)',borderRadius:[4,4,0,0]},label:{show:true,position:'top',color:'#8B949E',fontSize:11,fontFamily:'IBM Plex Sans',formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}},{name:'실적(마감)',type:'bar',data:actuals,itemStyle:{color:'#38BDF8',borderRadius:[4,4,0,0]},label:{show:true,position:'top',color:'#38BDF8',fontSize:11,fontFamily:'IBM Plex Sans',formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}},{name:'실적(진행중)',type:'bar',data:sofars,itemStyle:{color:'rgba(56,189,248,.4)',borderRadius:[4,4,0,0],borderColor:'#38BDF8',borderWidth:1},label:{show:true,position:'top',color:'rgba(56,189,248,.8)',fontSize:11,fontFamily:'IBM Plex Sans',formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}}]},true);
 months.forEach(m=>{const real=m.status==='마감'?m.actual:m.sofar;const rate=real!=null?(real/m.plan*100).toFixed(1)+'%':'—';const ok=real!=null&&real>=m.plan;const tr=document.createElement('tr');
 tr.innerHTML='<td style="color:var(--text-secondary);font-weight:600;">'+m.month+'</td>'+
-'<td><span style="padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;background:'+(m.status==='마감'?'rgba(52,211,153,.15)':'rgba(251,191,36,.15)')+';color:'+(m.status==='마감'?'var(--emerald)':'var(--amber)')+';">'+m.status+'</span></td>'+
+'<td><span style="padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;background:'+(m.status==='마감'?'rgba(52,211,153,.15)':'rgba(251,191,36,.15)')+';color:'+(m.status==='마감'?'var(--emerald)':'var(--amber)')+';">'+m.status+'</span></td>'+
 '<td class="num">'+fmt(m.plan)+'</td><td class="num">'+fmt(m.actual??m.sofar)+'</td><td class="num">'+fmt(m.sofar??m.actual)+'</td>'+
 '<td style="color:'+(ok?'var(--emerald)':'var(--rose)')+'">'+rate+'</td>';pb.appendChild(tr);});}
 function renderBehind(){
@@ -637,10 +637,10 @@ tr.innerHTML='<td style="color:var(--amber);">'+item.cat+'</td><td style="color:
 function renderStock(){
 const d=getData();const ordered=[...catSort(d.stock,'cat')].reverse();const cats=ordered.map(s=>s.cat);const rates=ordered.map(s=>Math.round(s.current/s.safety*100));const colors=ordered.map(s=>catColor(s.cat));
 if(!chartStock)chartStock=echarts.init(document.getElementById('stockChart'),null,{renderer:'canvas'});
-chartStock.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12}},grid:{left:100,right:30,top:10,bottom:20},xAxis:{type:'value',max:150,axisLabel:{color:'#8B949E',fontSize:11,formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},yAxis:{type:'category',data:cats,axisLabel:{color:'#C9D1D9',fontSize:11}},series:[{type:'bar',data:rates.map((r,i)=>({value:r,itemStyle:{color:colors[i],borderRadius:[0,4,4,0]}})),label:{show:true,position:'right',color:'#C9D1D9',fontSize:11,formatter:'{c}%'}},{type:'line',data:Array(cats.length).fill(100),symbol:'none',lineStyle:{color:'rgba(255,255,255,.25)',type:'dashed',width:1.5}}]},true);
+chartStock.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:13}},grid:{left:100,right:30,top:10,bottom:20},xAxis:{type:'value',max:150,axisLabel:{color:'#8B949E',fontSize:12,formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},yAxis:{type:'category',data:cats,axisLabel:{color:'#C9D1D9',fontSize:12}},series:[{type:'bar',data:rates.map((r,i)=>({value:r,itemStyle:{color:colors[i],borderRadius:[0,4,4,0]}})),label:{show:true,position:'right',color:'#C9D1D9',fontSize:12,formatter:'{c}%'}},{type:'line',data:Array(cats.length).fill(100),symbol:'none',lineStyle:{color:'rgba(255,255,255,.25)',type:'dashed',width:1.5}}]},true);
 const lacking=d.stock.filter(s=>s.current<s.safety);const alertEl=document.getElementById('stockAlert');
-if(lacking.length){alertEl.innerHTML='<div style="padding:12px 16px;background:rgba(248,113,113,.07);border-left:3px solid var(--rose);border-radius:8px;font-size:12px;"><div style="color:var(--rose);font-weight:700;margin-bottom:6px;">⚠️ 안전재고 부족 분석 · 부족 품목군: '+lacking.length+'개 · 총 부족량: '+lacking.reduce((s,x)=>s+(x.safety-x.current),0)+'개</div>'+lacking.map(s=>'<div>'+s.cat+' · '+(s.current/s.safety*100).toFixed(1)+'% 🟠 주의 ('+(s.safety-s.current)+'개 부족)</div>').join('')+'<div style="color:var(--text-muted);margin-top:6px;">💡 부족한 품목군을 우선으로 재고 확충 필요</div></div>';}
-else{alertEl.innerHTML='<div style="padding:10px 16px;background:rgba(52,211,153,.07);border-left:3px solid var(--emerald);border-radius:8px;font-size:12px;color:var(--emerald);">✅ 모든 품목군 안전재고 충족</div>';}}
+if(lacking.length){alertEl.innerHTML='<div style="padding:12px 16px;background:rgba(248,113,113,.07);border-left:3px solid var(--rose);border-radius:8px;font-size:13px;"><div style="color:var(--rose);font-weight:700;margin-bottom:6px;">⚠️ 안전재고 부족 분석 · 부족 품목군: '+lacking.length+'개 · 총 부족량: '+lacking.reduce((s,x)=>s+(x.safety-x.current),0)+'개</div>'+lacking.map(s=>'<div>'+s.cat+' · '+(s.current/s.safety*100).toFixed(1)+'% 🟠 주의 ('+(s.safety-s.current)+'개 부족)</div>').join('')+'<div style="color:var(--text-muted);margin-top:6px;">💡 부족한 품목군을 우선으로 재고 확충 필요</div></div>';}
+else{alertEl.innerHTML='<div style="padding:10px 16px;background:rgba(52,211,153,.07);border-left:3px solid var(--emerald);border-radius:8px;font-size:13px;color:var(--emerald);">✅ 모든 품목군 안전재고 충족</div>';}}
 </script>
 <script>
 function renderLoad(){
@@ -669,19 +669,19 @@ return{...i,avail,used,rate};});}
 if(!chartLoad)chartLoad=echarts.init(document.getElementById('loadChart'),null,{renderer:'canvas'});
 const colors=loadData.map(i=>i.rate<=80?'#34D399':i.rate<=100?'#FBBF24':'#F87171');
 const maxRate=Math.max(130,...loadData.map(i=>i.rate),10);
-chartLoad.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12},formatter:p=>{const i=loadData[p[0].dataIndex];if(hasStMin){return i.item+'<br/>부하율: '+i.rate+'%<br/>당월 계획수량: '+i.used+'개<br/>CAPA: '+i.avail.toFixed(1)+'개 (하루 '+i.dailyCap+'개×'+i.workers+'명×'+i.days+'일)';}return i.item+' ('+i.cat+')<br/>부하율: '+i.rate+'%<br/>ST: '+i.st+'초 × '+i.weekProd+'개 = '+(i.used/3600).toFixed(1)+'시간<br/>가용시간: '+(i.avail/3600).toFixed(0)+'시간 ('+i.workers+'명×'+i.days+'일×'+i.hoursPerDay+'h)';}},grid:{left:90,right:70,top:20,bottom:30},xAxis:{type:'value',max:maxRate,axisLabel:{color:'#8B949E',fontSize:11,formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},yAxis:{type:'category',data:loadData.map(i=>i.item),axisLabel:{color:'#C9D1D9',fontSize:11}},series:[{type:'bar',data:loadData.map((i,idx)=>({value:i.rate,itemStyle:{color:colors[idx],borderRadius:[0,4,4,0]}})),label:{show:true,position:'right',color:'#C9D1D9',fontSize:11,formatter:p=>p.value+'%'}},{type:'line',data:Array(loadData.length).fill(80),symbol:'none',lineStyle:{color:'rgba(52,211,153,.5)',type:'dashed',width:1}},{type:'line',data:Array(loadData.length).fill(100),symbol:'none',lineStyle:{color:'rgba(248,113,113,.5)',type:'dashed',width:1.5}}]},true);
+chartLoad.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:13},formatter:p=>{const i=loadData[p[0].dataIndex];if(hasStMin){return i.item+'<br/>부하율: '+i.rate+'%<br/>당월 계획수량: '+i.used+'개<br/>CAPA: '+i.avail.toFixed(1)+'개 (하루 '+i.dailyCap+'개×'+i.workers+'명×'+i.days+'일)';}return i.item+' ('+i.cat+')<br/>부하율: '+i.rate+'%<br/>ST: '+i.st+'초 × '+i.weekProd+'개 = '+(i.used/3600).toFixed(1)+'시간<br/>가용시간: '+(i.avail/3600).toFixed(0)+'시간 ('+i.workers+'명×'+i.days+'일×'+i.hoursPerDay+'h)';}},grid:{left:90,right:70,top:20,bottom:30},xAxis:{type:'value',max:maxRate,axisLabel:{color:'#8B949E',fontSize:12,formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},yAxis:{type:'category',data:loadData.map(i=>i.item),axisLabel:{color:'#C9D1D9',fontSize:12}},series:[{type:'bar',data:loadData.map((i,idx)=>({value:i.rate,itemStyle:{color:colors[idx],borderRadius:[0,4,4,0]}})),label:{show:true,position:'right',color:'#C9D1D9',fontSize:12,formatter:p=>p.value+'%'}},{type:'line',data:Array(loadData.length).fill(80),symbol:'none',lineStyle:{color:'rgba(52,211,153,.5)',type:'dashed',width:1}},{type:'line',data:Array(loadData.length).fill(100),symbol:'none',lineStyle:{color:'rgba(248,113,113,.5)',type:'dashed',width:1.5}}]},true);
 const lc=document.getElementById('loadCards');lc.innerHTML='';
 loadData.forEach(i=>{const color=i.rate<=80?'var(--emerald)':i.rate<=100?'var(--amber)':'var(--rose)';const barClass=i.rate<=80?'load-ok':i.rate<=100?'load-warn':'load-over';const card=document.createElement('div');card.className='card';card.style.padding='14px';
 if(hasStMin){
-card.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-size:11px;font-weight:700;color:var(--text-secondary);">'+i.item+'</div><div style="font-size:10px;color:var(--text-muted);">'+i.cat+'</div></div>'+
-'<div style="font-size:22px;font-weight:700;font-family:IBM Plex Sans,sans-serif;color:'+color+';margin-bottom:8px;">'+i.rate+'%</div>'+
+card.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-size:12px;font-weight:700;color:var(--text-secondary);">'+i.item+'</div><div style="font-size:11px;color:var(--text-muted);">'+i.cat+'</div></div>'+
+'<div style="font-size:25px;font-weight:700;font-family:IBM Plex Sans,sans-serif;color:'+color+';margin-bottom:8px;">'+i.rate+'%</div>'+
 '<div class="load-bar-wrap"><div class="load-bar '+barClass+'" style="width:'+Math.min(i.rate,100)+'%;"></div></div>'+
-'<div style="margin-top:6px;font-size:10px;color:var(--text-muted);">CAPA '+i.avail.toFixed(1)+'개 · 계획 '+i.used+'개 · '+i.workers+'명</div>';
+'<div style="margin-top:6px;font-size:11px;color:var(--text-muted);">CAPA '+i.avail.toFixed(1)+'개 · 계획 '+i.used+'개 · '+i.workers+'명</div>';
 }else{
-card.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-size:11px;font-weight:700;color:var(--text-secondary);">'+i.item+'</div><div style="font-size:10px;color:var(--text-muted);">'+i.cat+'</div></div>'+
-'<div style="font-size:22px;font-weight:700;font-family:IBM Plex Sans,sans-serif;color:'+color+';margin-bottom:8px;">'+i.rate+'%</div>'+
+card.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-size:12px;font-weight:700;color:var(--text-secondary);">'+i.item+'</div><div style="font-size:11px;color:var(--text-muted);">'+i.cat+'</div></div>'+
+'<div style="font-size:25px;font-weight:700;font-family:IBM Plex Sans,sans-serif;color:'+color+';margin-bottom:8px;">'+i.rate+'%</div>'+
 '<div class="load-bar-wrap"><div class="load-bar '+barClass+'" style="width:'+Math.min(i.rate,100)+'%;"></div></div>'+
-'<div style="margin-top:6px;font-size:10px;color:var(--text-muted);">ST '+i.st+'초 · '+i.weekProd+'개 · '+i.workers+'명</div>';}
+'<div style="margin-top:6px;font-size:11px;color:var(--text-muted);">ST '+i.st+'초 · '+i.weekProd+'개 · '+i.workers+'명</div>';}
 lc.appendChild(card);});
 const total=loadData.reduce((s,i)=>s+i.used,0);const totalAvail=loadData.reduce((s,i)=>s+i.avail,0);const totalRate=totalAvail>0?Math.round(total/totalAvail*100):0;const over=loadData.filter(i=>i.rate>100),warn=loadData.filter(i=>i.rate>80&&i.rate<=100);
 const unit=hasStMin?'개':'h';const totalU=hasStMin?Math.round(total):Math.round(total/3600);const totalAU=hasStMin?Math.round(totalAvail):Math.round(totalAvail/3600);
@@ -690,7 +690,7 @@ document.getElementById('loadSummary').innerHTML='▶ '+(hasStMin?'이번달':'�
 <script>
 function renderLoadProcess(d){
 if(!d.processGroups){
-document.getElementById('loadProcessCards').innerHTML='<div style="color:var(--text-muted);font-size:12px;">공정그룹 데이터가 없습니다.</div>';
+document.getElementById('loadProcessCards').innerHTML='<div style="color:var(--text-muted);font-size:13px;">공정그룹 데이터가 없습니다.</div>';
 return;}
 const filtered=selectedCats.length?d.stItems.filter(i=>selectedCats.includes(i.cat)&&(!selectedItems.length||selectedItems.includes(i.item))):d.stItems;
 const pgNames=['레이저웰딩','디스펜싱','납땜','일반공정'];
@@ -710,7 +710,7 @@ reqMin:pgReqMin[pg.name]||0,
 rate:pg.availMin>0?Math.round((pgReqMin[pg.name]||0)/pg.availMin*100):0}));
 if(!chartLoadProcess)chartLoadProcess=echarts.init(document.getElementById('loadProcessChart'),null,{renderer:'canvas'});
 const colors=pgData.map(i=>i.rate<=80?'#34D399':i.rate<=100?'#FBBF24':'#F87171');
-chartLoadProcess.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12},formatter:p=>{const i=pgData[p[0].dataIndex];return i.name+'<br/>부하율: '+i.rate+'%<br/>필요: '+i.reqMin.toLocaleString()+'분<br/>가용: '+i.availMin.toLocaleString()+'분<br/>인원: '+i.workers+'명 / 장비: '+(i.equipment||'Flex')+'EA<br/>비고: '+i.comment;}},grid:{left:90,right:80,top:20,bottom:30},xAxis:{type:'value',max:Math.max(130,...pgData.map(i=>i.rate),10),axisLabel:{color:'#8B949E',fontSize:11,formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},yAxis:{type:'category',data:pgData.map(i=>i.name),axisLabel:{color:'#C9D1D9',fontSize:12}},series:[{type:'bar',data:pgData.map((i,idx)=>({value:i.rate,itemStyle:{color:colors[idx],borderRadius:[0,4,4,0]}})),label:{show:true,position:'right',color:'#C9D1D9',fontSize:12,formatter:p=>p.value+'%'}},{type:'line',data:Array(pgData.length).fill(80),symbol:'none',lineStyle:{color:'rgba(52,211,153,.5)',type:'dashed',width:1}},{type:'line',data:Array(pgData.length).fill(100),symbol:'none',lineStyle:{color:'rgba(248,113,113,.5)',type:'dashed',width:1.5}}]},true);
+chartLoadProcess.setOption({backgroundColor:'transparent',tooltip:{trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:13},formatter:p=>{const i=pgData[p[0].dataIndex];return i.name+'<br/>부하율: '+i.rate+'%<br/>필요: '+i.reqMin.toLocaleString()+'분<br/>가용: '+i.availMin.toLocaleString()+'분<br/>인원: '+i.workers+'명 / 장비: '+(i.equipment||'Flex')+'EA<br/>비고: '+i.comment;}},grid:{left:90,right:80,top:20,bottom:30},xAxis:{type:'value',max:Math.max(130,...pgData.map(i=>i.rate),10),axisLabel:{color:'#8B949E',fontSize:12,formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}},yAxis:{type:'category',data:pgData.map(i=>i.name),axisLabel:{color:'#C9D1D9',fontSize:13}},series:[{type:'bar',data:pgData.map((i,idx)=>({value:i.rate,itemStyle:{color:colors[idx],borderRadius:[0,4,4,0]}})),label:{show:true,position:'right',color:'#C9D1D9',fontSize:13,formatter:p=>p.value+'%'}},{type:'line',data:Array(pgData.length).fill(80),symbol:'none',lineStyle:{color:'rgba(52,211,153,.5)',type:'dashed',width:1}},{type:'line',data:Array(pgData.length).fill(100),symbol:'none',lineStyle:{color:'rgba(248,113,113,.5)',type:'dashed',width:1.5}}]},true);
 const pc=document.getElementById('loadProcessCards');pc.innerHTML='';
 const pgColors=['#7C6FCD','#38BDF8','#34D399','#FBBF24'];
 pgData.forEach((pg,idx)=>{
@@ -721,16 +721,16 @@ const card=document.createElement('div');card.className='pg-card';
 card.innerHTML=
 '<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">'+
 '<span style="width:3px;height:14px;border-radius:2px;background:'+accent+';display:inline-block;"></span>'+
-'<span style="font-size:12px;font-weight:700;color:var(--text-secondary);">'+pg.name+'</span>'+
+'<span style="font-size:13px;font-weight:700;color:var(--text-secondary);">'+pg.name+'</span>'+
 '</div>'+
-'<div style="font-size:26px;font-weight:700;font-family:IBM Plex Sans,sans-serif;color:'+color+';margin-bottom:10px;">'+pg.rate+'%</div>'+
+'<div style="font-size:29px;font-weight:700;font-family:IBM Plex Sans,sans-serif;color:'+color+';margin-bottom:10px;">'+pg.rate+'%</div>'+
 '<div class="load-bar-wrap" style="height:8px;"><div class="load-bar '+barClass+'" style="width:'+Math.min(pg.rate,100)+'%;"></div></div>'+
 '<div style="margin-top:10px;display:flex;flex-direction:column;gap:3px;">'+
-'<div style="display:flex;justify-content:space-between;font-size:10px;"><span style="color:var(--text-muted);">필요시간</span><span style="color:var(--text-secondary);font-family:IBM Plex Sans,sans-serif;">'+pg.reqMin.toLocaleString()+'분</span></div>'+
-'<div style="display:flex;justify-content:space-between;font-size:10px;"><span style="color:var(--text-muted);">가용시간</span><span style="color:var(--text-secondary);font-family:IBM Plex Sans,sans-serif;">'+pg.availMin.toLocaleString()+'분</span></div>'+
-'<div style="display:flex;justify-content:space-between;font-size:10px;"><span style="color:var(--text-muted);">인원/장비</span><span style="color:var(--text-secondary);">'+pg.workers+'명 / '+(pg.equipment||'Flex')+'EA</span></div>'+
+'<div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:var(--text-muted);">필요시간</span><span style="color:var(--text-secondary);font-family:IBM Plex Sans,sans-serif;">'+pg.reqMin.toLocaleString()+'분</span></div>'+
+'<div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:var(--text-muted);">가용시간</span><span style="color:var(--text-secondary);font-family:IBM Plex Sans,sans-serif;">'+pg.availMin.toLocaleString()+'분</span></div>'+
+'<div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:var(--text-muted);">인원/장비</span><span style="color:var(--text-secondary);">'+pg.workers+'명 / '+(pg.equipment||'Flex')+'EA</span></div>'+
 '</div>'+
-'<div style="margin-top:8px;padding:6px 8px;background:rgba(255,255,255,.03);border-radius:6px;font-size:10px;color:var(--text-muted);line-height:1.5;">'+pg.comment+'</div>';
+'<div style="margin-top:8px;padding:6px 8px;background:rgba(255,255,255,.03);border-radius:6px;font-size:11px;color:var(--text-muted);line-height:1.5;">'+pg.comment+'</div>';
 pc.appendChild(card);});
 const tb=document.getElementById('loadStTableBody');tb.innerHTML='';
 filtered.forEach(item=>{
@@ -749,7 +749,7 @@ const totalReqAll=filtered.reduce((s,i)=>{const _pQ3=i.planQty!=null?i.planQty:i
 const totalAvailAll=d.processGroups.reduce((s,pg)=>s+pg.availMin,0);
 const totalRate=totalAvailAll>0?Math.round(totalReqAll/totalAvailAll*100):0;
 const over=pgData.filter(i=>i.rate>100),warn=pgData.filter(i=>i.rate>80&&i.rate<=100);
-document.getElementById('loadSummary').innerHTML='▶ 공정그룹 전체 부하율(가중): <strong style="color:'+(totalRate<=80?'var(--emerald)':totalRate<=100?'var(--amber)':'var(--rose)')+'">'+totalRate+'%</strong> · 필요 '+totalReqAll.toLocaleString()+'분 / 가용 '+totalAvailAll.toLocaleString()+'분'+(over.length?'<br/>⚠️ 과부하 공정: <span style="color:var(--rose)">'+over.map(i=>i.name).join(', ')+'</span>':'<br/>✅ 모든 공정 여유 상태')+(warn.length?'<br/>🟡 주의 공정: <span style="color:var(--amber)">'+warn.map(i=>i.name).join(', ')+'</span>':'')+'<br/><span style="color:var(--text-muted);font-size:10px;">📋 '+_inProg.month+' 계획 '+_mPlan.toLocaleString()+'EA 기준 · 출처: 생산2반_CAPA_부하율_WIP관리_v3 · 3번 시트(제품별 공정그룹ST)</span>';}
+document.getElementById('loadSummary').innerHTML='▶ 공정그룹 전체 부하율(가중): <strong style="color:'+(totalRate<=80?'var(--emerald)':totalRate<=100?'var(--amber)':'var(--rose)')+'">'+totalRate+'%</strong> · 필요 '+totalReqAll.toLocaleString()+'분 / 가용 '+totalAvailAll.toLocaleString()+'분'+(over.length?'<br/>⚠️ 과부하 공정: <span style="color:var(--rose)">'+over.map(i=>i.name).join(', ')+'</span>':'<br/>✅ 모든 공정 여유 상태')+(warn.length?'<br/>🟡 주의 공정: <span style="color:var(--amber)">'+warn.map(i=>i.name).join(', ')+'</span>':'')+'<br/><span style="color:var(--text-muted);font-size:11px;">📋 '+_inProg.month+' 계획 '+_mPlan.toLocaleString()+'EA 기준 · 출처: 생산2반_CAPA_부하율_WIP관리_v3 · 3번 시트(제품별 공정그룹ST)</span>';}
 function renderInsight(fw){
 const d=getData();const last=fw.length?fw[fw.length-1]:null,prev=fw.length>1?fw[fw.length-2]:null;const insightEl=document.getElementById('insightContent');
 document.getElementById('insightFilterLabel').textContent='('+selectedMonths.join('·')+' · '+selectedCats.join('·')+')';
@@ -775,7 +775,7 @@ else{
 const filtST=d.stItems.filter(i=>selectedCats.includes(i.cat)&&(!selectedItems.length||selectedItems.includes(i.item)));const overloaded=filtST.filter(i=>{const a=i.workers*i.days*i.hoursPerDay*3600;return a>0&&i.st*i.weekProd/a>1;});
 if(overloaded.length)lines.push('⏱️ 과부하 품목('+overloaded.map(i=>i.item).join(', ')+') 발생 — 인원 재배치 또는 잔업 계획 수립 권고.');
 else lines.push('⏱️ 현장 부하율 정상 범위 — 추가 물량 수용 여력 있음.');}
-insightEl.innerHTML=lines.map(l=>'<div style="display:flex;gap:8px;margin-bottom:4px;"><span style="color:var(--indigo);font-size:9px;margin-top:4px;flex-shrink:0;">▶</span><span>'+l+'</span></div>').join('');}
+insightEl.innerHTML=lines.map(l=>'<div style="display:flex;gap:8px;margin-bottom:4px;"><span style="color:var(--indigo);font-size:10px;margin-top:4px;flex-shrink:0;">▶</span><span>'+l+'</span></div>').join('');}
 // ── Google Sheets 안전재고 자동 연동 ──────────────────────────────────────
 const SHEET_STOCK_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vQBDlCaA6Wsxlln7ppRoVzUvjH-fI6t0zHTMY9Ex8SyEozgdBFgU4OwqQcs43Y8NYYrCTwADPIAQ6Di/pub?gid=680125344&single=true&output=csv';
 // 대시보드 품목군 → 시트 행 매핑
@@ -931,9 +931,9 @@ return '<div class="score-card" style="--accent-color:'+accent+';"><div class="s
 '<div class="score-num" style="color:'+color+';">'+val+'</div><div class="score-label">'+label+'</div><div class="score-delta" style="color:var(--text-muted);">'+(sub||'')+'</div></div>';}
 function wDelta(cur,prev,unit){if(cur==null||prev==null)return '';const d=cur-prev;
 return(d>=0?'<span class="up">▲':'<span class="down">▼')+wFmt(Math.abs(d),unit)+'</span> 전월 '+wFmt(prev,unit);}
-const W_TOOLTIP={trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12}};
-const W_AXIS={axisLine:{lineStyle:{color:'#30363D'}},axisLabel:{color:'#8B949E',fontSize:11}};
-const W_VAXIS={type:'value',axisLabel:{color:'#8B949E',fontSize:11},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}};
+const W_TOOLTIP={trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:13}};
+const W_AXIS={axisLine:{lineStyle:{color:'#30363D'}},axisLabel:{color:'#8B949E',fontSize:12}};
+const W_VAXIS={type:'value',axisLabel:{color:'#8B949E',fontSize:12},splitLine:{lineStyle:{color:'rgba(48,54,61,.6)'}}};
 
 function selectWeldMonth(m){if(WELD&&WELD.active.includes(m)){weldMonth=m;renderWeld();}}
 function renderWeldChips(){
@@ -985,13 +985,13 @@ function renderWeldMonthChart(){
 const W=WELD,ms=W.active;
 const plan=ms.map(m=>W.monthly[m]['계획수량']),act=ms.map(m=>W.monthly[m]['생산실적']),rates=ms.map(m=>{const r=wRate(W.monthly[m]['생산실적'],W.monthly[m]['계획수량']);return r==null?null:+r.toFixed(1);});
 if(!chartWeldMonth){chartWeldMonth=echarts.init(document.getElementById('weldMonthChart'));chartWeldMonth.on('click',p=>selectWeldMonth(p.name));}
-const lbl=c=>({show:true,position:'top',color:c,fontSize:10,fontFamily:'IBM Plex Sans',formatter:p=>p.value==null?'':Number(p.value).toLocaleString()});
-chartWeldMonth.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:['계획','생산실적','달성률'],textStyle:{color:'#C9D1D9',fontSize:11},top:0},grid:{left:55,right:50,top:45,bottom:30},
+const lbl=c=>({show:true,position:'top',color:c,fontSize:11,fontFamily:'IBM Plex Sans',formatter:p=>p.value==null?'':Number(p.value).toLocaleString()});
+chartWeldMonth.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:['계획','생산실적','달성률'],textStyle:{color:'#C9D1D9',fontSize:12},top:0},grid:{left:55,right:50,top:45,bottom:30},
 xAxis:{type:'category',data:ms,...W_AXIS},
-yAxis:[W_VAXIS,{type:'value',axisLabel:{color:'#8B949E',fontSize:11,formatter:'{value}%'},splitLine:{show:false}}],
+yAxis:[W_VAXIS,{type:'value',axisLabel:{color:'#8B949E',fontSize:12,formatter:'{value}%'},splitLine:{show:false}}],
 series:[{name:'계획',type:'bar',data:plan,itemStyle:{color:'rgba(139,148,158,.3)',borderRadius:[4,4,0,0]},label:lbl('#8B949E')},
 {name:'생산실적',type:'bar',data:act.map((v,i)=>({value:v,itemStyle:{color:ms[i]===weldMonth?'#38BDF8':'rgba(56,189,248,.45)',borderRadius:[4,4,0,0]}})),label:lbl('#38BDF8')},
-{name:'달성률',type:'line',yAxisIndex:1,data:rates,smooth:true,symbolSize:6,lineStyle:{color:'#FBBF24',width:2},itemStyle:{color:'#FBBF24'},label:{show:true,position:'top',color:'#FBBF24',fontSize:10,formatter:p=>p.value==null?'':p.value+'%'}}]},true);
+{name:'달성률',type:'line',yAxisIndex:1,data:rates,smooth:true,symbolSize:6,lineStyle:{color:'#FBBF24',width:2},itemStyle:{color:'#FBBF24'},label:{show:true,position:'top',color:'#FBBF24',fontSize:11,formatter:p=>p.value==null?'':p.value+'%'}}]},true);
 const tb=document.getElementById('weldMonthTable');
 tb.innerHTML=ms.map(m=>{const x=W.monthly[m],r=wRate(x['생산실적'],x['계획수량']);
 return '<tr style="cursor:pointer;'+(m===weldMonth?'background:rgba(251,146,60,.08);':'')+'" onclick="selectWeldMonth(\''+m+'\')"><td style="font-weight:600;color:'+(m===weldMonth?'var(--coral)':'var(--text-secondary)')+';">'+m+'</td>'+
@@ -1002,7 +1002,7 @@ return '<tr style="cursor:pointer;'+(m===weldMonth?'background:rgba(251,146,60,.
 function renderWeldMachine(){
 const W=WELD,ms=W.active,gs=W.machine.groups,m=weldMonth;
 if(!chartWeldMachine){chartWeldMachine=echarts.init(document.getElementById('weldMachineChart'));chartWeldMachine.on('click',p=>selectWeldMonth(p.name));}
-chartWeldMachine.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:gs,textStyle:{color:'#C9D1D9',fontSize:11},top:0},grid:{left:55,right:20,top:45,bottom:30},
+chartWeldMachine.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:gs,textStyle:{color:'#C9D1D9',fontSize:12},top:0},grid:{left:55,right:20,top:45,bottom:30},
 xAxis:{type:'category',data:ms,...W_AXIS},yAxis:W_VAXIS,
 series:gs.map(g=>({name:g,type:'bar',data:ms.map(mm=>((W.machine.data[mm]||{})[g]||{})['생산실적']),itemStyle:{color:WELD_COLORS[g]||'#8B949E',borderRadius:[3,3,0,0]}}))},true);
 const md=W.machine.data[m]||{},wd=W.work.data[m]||{},ld=W.leave.data[m]||{};
@@ -1026,11 +1026,11 @@ const W=WELD,m=weldMonth,sd=W.size.data[m]||{},gs=W.size.groups;
 document.getElementById('weldSizeLabel').textContent='('+m+')';
 if(!chartWeldSize)chartWeldSize=echarts.init(document.getElementById('weldSizeChart'));
 const plan=gs.map(g=>(sd[g]||{})['계획']??null),act=gs.map(g=>(sd[g]||{})['실적']??null);
-chartWeldSize.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:['계획','실적'],textStyle:{color:'#C9D1D9',fontSize:11},top:0},grid:{left:55,right:20,top:45,bottom:30},
+chartWeldSize.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:['계획','실적'],textStyle:{color:'#C9D1D9',fontSize:12},top:0},grid:{left:55,right:20,top:45,bottom:30},
 xAxis:{type:'category',data:gs,...W_AXIS},yAxis:W_VAXIS,
 series:[{name:'계획',type:'bar',data:plan,itemStyle:{color:'rgba(139,148,158,.3)',borderRadius:[4,4,0,0]}},
 {name:'실적',type:'bar',data:act.map((v,i)=>{const r=wRate(v||0,plan[i]);return{value:v,itemStyle:{color:plan[i]?(r>=100?'#34D399':r>=90?'#FBBF24':'#F87171'):'#A78BFA',borderRadius:[4,4,0,0]}};}),
-label:{show:true,position:'top',fontSize:10,color:'#C9D1D9',formatter:p=>{const pl=plan[p.dataIndex];return pl?(wRate(p.value||0,pl)).toFixed(0)+'%':(p.value==null?'':Number(p.value).toLocaleString());}}}]},true);
+label:{show:true,position:'top',fontSize:11,color:'#C9D1D9',formatter:p=>{const pl=plan[p.dataIndex];return pl?(wRate(p.value||0,pl)).toFixed(0)+'%':(p.value==null?'':Number(p.value).toLocaleString());}}}]},true);
 document.getElementById('weldSizeTable').innerHTML=gs.map(g=>{const x=sd[g]||{},p=x['계획'],a=x['실적'],r=p?wRate(a||0,p):null;
 return '<tr><td style="font-weight:600;color:var(--text-secondary);">'+g+'</td><td class="num">'+wFmt(p)+'</td><td class="num">'+wFmt(a)+'</td>'+
 '<td class="num">'+(p?wFmt(Math.max(p-(a||0),0)):'—')+'</td><td class="num" style="color:'+wRateColor(r)+'">'+wFmt(r,'%')+'</td></tr>';}).join('');}
@@ -1097,30 +1097,30 @@ const cm2=document.getElementById('weldMcComment');cm2.innerHTML=cm;cm2.style.ba
 // 차트
 const ax={...W_AXIS},sel=i=>ms[i]===m;
 if(!chartMcTrend){chartMcTrend=echarts.init(document.getElementById('weldMcTrend'));chartMcTrend.on('click',p=>selectWeldMonth(p.name));}
-chartMcTrend.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:['생산실적','시간당 생산량','전체 평균(시간당)'],textStyle:{color:'#C9D1D9',fontSize:10},top:0},grid:{left:48,right:40,top:52,bottom:28},
-xAxis:{type:'category',data:ms,...ax},yAxis:[W_VAXIS,{type:'value',scale:true,axisLabel:{color:'#8B949E',fontSize:10},splitLine:{show:false}}],
-series:[{name:'생산실적',type:'bar',data:ms.map((mm,i)=>({value:mcVal('machine',mm,g,'생산실적'),itemStyle:{color:sel(i)?c:c+'77',borderRadius:[4,4,0,0]}})),label:{show:true,position:'top',color:'#C9D1D9',fontSize:10,formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}},
+chartMcTrend.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:['생산실적','시간당 생산량','전체 평균(시간당)'],textStyle:{color:'#C9D1D9',fontSize:11},top:0},grid:{left:48,right:40,top:52,bottom:28},
+xAxis:{type:'category',data:ms,...ax},yAxis:[W_VAXIS,{type:'value',scale:true,axisLabel:{color:'#8B949E',fontSize:11},splitLine:{show:false}}],
+series:[{name:'생산실적',type:'bar',data:ms.map((mm,i)=>({value:mcVal('machine',mm,g,'생산실적'),itemStyle:{color:sel(i)?c:c+'77',borderRadius:[4,4,0,0]}})),label:{show:true,position:'top',color:'#C9D1D9',fontSize:11,formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}},
 {name:'시간당 생산량',type:'line',yAxisIndex:1,data:ms.map(mm=>mcVal('machine',mm,g,'시간당생산량')),symbolSize:7,lineStyle:{color:'#FBBF24',width:2},itemStyle:{color:'#FBBF24'},connectNulls:true},
 {name:'전체 평균(시간당)',type:'line',yAxisIndex:1,data:ms.map(mm=>(W.monthly[mm]||{})['시간당생산량']??null),symbol:'none',lineStyle:{color:'#8B949E',type:'dashed',width:1.5},itemStyle:{color:'#8B949E'},connectNulls:true}]},true);
 if(!chartMcHours){chartMcHours=echarts.init(document.getElementById('weldMcHours'));chartMcHours.on('click',p=>selectWeldMonth(p.name));}
 const normal=ms.map(mm=>{const t=mcVal('work',mm,g,'총 작업시간');return t==null?null:t-(mcVal('work',mm,g,'야근시간')||0);});
-chartMcHours.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:['정상근무','야근','휴가차감'],textStyle:{color:'#C9D1D9',fontSize:10},top:0},grid:{left:48,right:20,top:40,bottom:28},
-xAxis:{type:'category',data:ms,...ax},yAxis:{...W_VAXIS,axisLabel:{color:'#8B949E',fontSize:10,formatter:'{value}h'}},
+chartMcHours.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:['정상근무','야근','휴가차감'],textStyle:{color:'#C9D1D9',fontSize:11},top:0},grid:{left:48,right:20,top:40,bottom:28},
+xAxis:{type:'category',data:ms,...ax},yAxis:{...W_VAXIS,axisLabel:{color:'#8B949E',fontSize:11,formatter:'{value}h'}},
 series:[{name:'정상근무',type:'bar',stack:'h',data:normal,itemStyle:{color:'#2DD4BF'}},
 {name:'야근',type:'bar',stack:'h',data:ms.map(mm=>mcVal('work',mm,g,'야근시간')),itemStyle:{color:'#FB923C'}},
 {name:'휴가차감',type:'bar',stack:'h',data:ms.map(mm=>mcVal('work',mm,g,'휴가차감')),itemStyle:{color:'rgba(139,148,158,.35)',borderRadius:[4,4,0,0],borderColor:'#8B949E',borderType:'dashed'}}]},true);
 if(!chartMcShare)chartMcShare=echarts.init(document.getElementById('weldMcShare'));
-chartMcShare.setOption({backgroundColor:'transparent',tooltip:{trigger:'item',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12},formatter:p=>p.name+'<br>'+Number(p.value).toLocaleString()+' EA ('+p.percent+'%)'},
-title:{text:wFmt(share,'%'),subtext:g+' 점유율',left:'center',top:'40%',textStyle:{color:c,fontSize:20,fontWeight:700,fontFamily:'IBM Plex Sans'},subtextStyle:{color:'#8B949E',fontSize:11}},
-series:[{type:'pie',radius:['52%','76%'],center:['50%','52%'],avoidLabelOverlap:true,label:{color:'#C9D1D9',fontSize:11,formatter:'{b}\n{d}%'},
+chartMcShare.setOption({backgroundColor:'transparent',tooltip:{trigger:'item',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:13},formatter:p=>p.name+'<br>'+Number(p.value).toLocaleString()+' EA ('+p.percent+'%)'},
+title:{text:wFmt(share,'%'),subtext:g+' 점유율',left:'center',top:'40%',textStyle:{color:c,fontSize:22,fontWeight:700,fontFamily:'IBM Plex Sans'},subtextStyle:{color:'#8B949E',fontSize:12}},
+series:[{type:'pie',radius:['52%','76%'],center:['50%','52%'],avoidLabelOverlap:true,label:{color:'#C9D1D9',fontSize:12,formatter:'{b}\n{d}%'},
 data:gs.map(x=>({name:x,value:mcVal('machine',m,x,'생산실적')||0,itemStyle:{color:x===g?c:(WELD_COLORS[x]||'#8B949E')+'40',borderColor:'#161B22',borderWidth:2}})).filter(d=>d.value>0)}]},true);
 if(!chartMcRank)chartMcRank=echarts.init(document.getElementById('weldMcRank'));
 const rr=[...rank].reverse();
 chartMcRank.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,grid:{left:55,right:45,top:15,bottom:25},
-xAxis:{...W_VAXIS,axisLabel:{color:'#8B949E',fontSize:10}},yAxis:{type:'category',data:rr.map(o=>o.x),axisLine:{lineStyle:{color:'#30363D'}},axisLabel:{color:'#C9D1D9',fontSize:11}},
+xAxis:{...W_VAXIS,axisLabel:{color:'#8B949E',fontSize:11}},yAxis:{type:'category',data:rr.map(o=>o.x),axisLine:{lineStyle:{color:'#30363D'}},axisLabel:{color:'#C9D1D9',fontSize:12}},
 series:[{type:'bar',data:rr.map(o=>({value:o.v,itemStyle:{color:o.x===g?c:(WELD_COLORS[o.x]||'#8B949E')+'40',borderRadius:[0,4,4,0]}})),barWidth:'55%',
-label:{show:true,position:'right',color:'#C9D1D9',fontSize:11,formatter:p=>p.value+' EA/h'},
-markLine:avg!=null?{symbol:'none',data:[{xAxis:avg}],lineStyle:{color:'#FBBF24',type:'dashed'},label:{color:'#FBBF24',fontSize:10,formatter:'평균 '+avg}}:undefined}]},true);
+label:{show:true,position:'right',color:'#C9D1D9',fontSize:12,formatter:p=>p.value+' EA/h'},
+markLine:avg!=null?{symbol:'none',data:[{xAxis:avg}],lineStyle:{color:'#FBBF24',type:'dashed'},label:{color:'#FBBF24',fontSize:11,formatter:'평균 '+avg}}:undefined}]},true);
 // 표
 document.getElementById('weldMcTable').innerHTML=ms.map(mm=>{
 const p=mcVal('machine',mm,g,'생산실적'),h=mcVal('machine',mm,g,'시간당생산량'),a=(W.monthly[mm]||{})['시간당생산량'];
