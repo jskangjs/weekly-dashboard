@@ -71,6 +71,9 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 .weld-2col{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:14px;}
 .weld-panel{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
 .weld-panel-t{font-size:13px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;}
+.weld-card-t{font-size:16px;font-weight:700;color:var(--text-primary);letter-spacing:-.01em;}
+.weld-card-v{font-size:30px;margin-bottom:2px;}
+.weld-unit{font-size:.5em;font-weight:600;margin-left:4px;opacity:.75;}
 .weld-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
 </style>
 </head>
@@ -927,8 +930,10 @@ function wFmt(n,unit){return n==null?'—':Number(n).toLocaleString(undefined,{m
 function wRate(a,p){return(p&&a!=null)?a/p*100:null;}
 function wRateColor(r){return r==null?'var(--text-muted)':r>=100?'var(--emerald)':r>=90?'var(--amber)':'var(--rose)';}
 function wCard(label,val,color,accent,badge,sub){
-return '<div class="score-card" style="--accent-color:'+accent+';"><div class="score-badge" style="background:'+accent+'22;color:'+accent+';">'+badge+'</div>'+
-'<div class="score-num" style="color:'+color+';">'+val+'</div><div class="score-label">'+label+'</div><div class="score-delta" style="color:var(--text-muted);">'+(sub||'')+'</div></div>';}
+return '<div class="score-card" style="--accent-color:'+accent+';"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;"><div class="weld-card-t">'+label+'</div><span class="score-badge" style="margin:0;background:'+accent+'22;color:'+accent+';">'+badge+'</span></div>'+
+'<div class="score-num weld-card-v" style="color:'+color+';">'+val+'</div><div class="score-delta" style="color:var(--text-muted);">'+(sub||'')+'</div></div>';}
+function wEA(v){return v==null?'—':wFmt(v)+'<span class="weld-unit">EA</span>';}
+function wU(v,u){return v==null?'—':wFmt(v)+'<span class="weld-unit">'+u+'</span>';}
 function wDelta(cur,prev,unit){if(cur==null||prev==null)return '';const d=cur-prev;
 return(d>=0?'<span class="up">▲':'<span class="down">▼')+wFmt(Math.abs(d),unit)+'</span> 전월 '+wFmt(prev,unit);}
 const W_TOOLTIP={trigger:'axis',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:13}};
@@ -951,20 +956,20 @@ renderWeldChips();
 // 연 누적
 const yRate=wRate(T['생산실적'],T['계획수량']);
 document.getElementById('weldYearBoard').innerHTML=
-wCard('연간 계획',wFmt(T['계획수량']),'var(--text-secondary)','#8B949E','YTD',W.active.length+'개월')+
-wCard('연간 생산실적',wFmt(T['생산실적']),'var(--sky)','#38BDF8','YTD','달성률 <span style="color:'+wRateColor(yRate)+'">'+wFmt(yRate,'%')+'</span>')+
-wCard('계획외 (기타)',wFmt(T['기타(계획외)']),'var(--violet)','#A78BFA','YTD','계획 외 생산분')+
-wCard('총 작업시간',wFmt(T['총 작업시간'],'h'),'var(--teal)','#2DD4BF','YTD','시간당 '+wFmt(T['시간당생산량'],' EA'));
+wCard('연간 계획',wEA(T['계획수량']),'var(--text-secondary)','#8B949E','YTD',W.active.length+'개월')+
+wCard('연간 생산실적',wEA(T['생산실적']),'var(--sky)','#38BDF8','YTD','달성률 <span style="color:'+wRateColor(yRate)+'">'+wFmt(yRate,'%')+'</span>')+
+wCard('계획외 (기타)',wEA(T['기타(계획외)']),'var(--violet)','#A78BFA','YTD','계획 외 생산분')+
+wCard('총 작업시간',wU(T['총 작업시간'],'h'),'var(--teal)','#2DD4BF','YTD','시간당 '+wFmt(T['시간당생산량'],' EA'));
 // 월
 const rate=wRate(M['생산실적'],M['계획수량']);
 const wk=(W.work.data[m]||{})['전체']||{};
 document.getElementById('weldMonthLabel').textContent='('+m+')';
 document.getElementById('weldMonthBoard').innerHTML=
-wCard(m+' 계획',wFmt(M['계획수량']),'var(--text-secondary)','#8B949E','MONTH','잔량 '+wFmt(M['잔량(계획-실적)']))+
-wCard(m+' 생산실적',wFmt(M['생산실적']),'var(--sky)','#38BDF8','MONTH',wDelta(M['생산실적'],P['생산실적']))+
+wCard(m+' 계획',wEA(M['계획수량']),'var(--text-secondary)','#8B949E','MONTH','잔량 '+wFmt(M['잔량(계획-실적)'],' EA'))+
+wCard(m+' 생산실적',wEA(M['생산실적']),'var(--sky)','#38BDF8','MONTH',wDelta(M['생산실적'],P['생산실적']))+
 wCard('달성률',wFmt(rate,'%'),wRateColor(rate),'#FBBF24','MONTH',pm?'전월 '+wFmt(wRate(P['생산실적'],P['계획수량']),'%'):'')+
-wCard('총 작업시간',wFmt(M['총 작업시간'],'h'),'var(--teal)','#2DD4BF','MONTH','가동 '+wFmt(wk['가동일(호기×일)'],'일')+' · 야근 '+wFmt(wk['야근횟수'],'회'))+
-wCard('시간당 생산량',wFmt(M['시간당생산량'],' EA'),'var(--coral)','#FB923C','MONTH',wDelta(M['시간당생산량'],P['시간당생산량']));
+wCard('총 작업시간',wU(M['총 작업시간'],'h'),'var(--teal)','#2DD4BF','MONTH','가동 '+wFmt(wk['가동일(호기×일)'],'일')+' · 야근 '+wFmt(wk['야근횟수'],'회'))+
+wCard('시간당 생산량',wU(M['시간당생산량'],'EA/h'),'var(--coral)','#FB923C','MONTH',wDelta(M['시간당생산량'],P['시간당생산량']));
 renderWeldMc();renderWeldInsight();renderWeldMonthChart();renderWeldMachine();renderWeldSize();
 const b=W.basis;document.getElementById('weldBasis').textContent=b.length?'※ 근무시간 기준: '+b.join(' '):'';}
 
@@ -1082,11 +1087,11 @@ const days=mcVal('work',m,g,'근무일'),otN=mcVal('work',m,g,'야근횟수'),ot
 const rank=gs.map(x=>({x,v:mcVal('machine',m,x,'시간당생산량')})).filter(o=>o.v!=null).sort((a,b)=>b.v-a.v);
 const rk=rank.findIndex(o=>o.x===g)+1;
 document.getElementById('weldMcBoard').innerHTML=
-wCard(m+' 생산실적',wFmt(prod),c,c,'MONTH',wDelta(prod,pProd))+
-wCard(m+' 시간당 생산량',wFmt(hr,' EA'),hr!=null&&avg!=null&&hr>=avg?'var(--emerald)':'var(--rose)','#34D399','MONTH','전체 평균 '+wFmt(avg)+(rk?' · '+rank.length+'대 중 '+rk+'위':''))+
+wCard(m+' 생산실적',wEA(prod),c,c,'MONTH',wDelta(prod,pProd))+
+wCard('시간당 생산량',wU(hr,'EA/h'),hr!=null&&avg!=null&&hr>=avg?'var(--emerald)':'var(--rose)','#34D399','MONTH','전체 평균 '+wFmt(avg)+(rk?' · '+rank.length+'대 중 '+rk+'위':''))+
 wCard('생산 점유율',wFmt(share,'%'),'var(--violet)','#A78BFA','MONTH','전체 '+wFmt(tot)+' 중')+
-wCard(m+' 작업시간',wFmt(hrs,'h'),'var(--teal)','#2DD4BF','MONTH','근무 '+wFmt(days,'일')+' · 야근 '+wFmt(otN,'회')+' · 휴가 '+wFmt(vac,'h'))+
-wCard('연간 누적',wFmt(yProd),'var(--text-secondary)','#8B949E','YTD','작업 '+wFmt(yH,'h')+' · 시간당 '+wFmt(yHr));
+wCard(m+' 작업시간',wU(hrs,'h'),'var(--teal)','#2DD4BF','MONTH','근무 '+wFmt(days,'일')+' · 야근 '+wFmt(otN,'회')+' · 휴가 '+wFmt(vac,'h'))+
+wCard('연간 누적',wEA(yProd),'var(--text-secondary)','#8B949E','YTD','작업 '+wFmt(yH,'h')+' · 시간당 '+wFmt(yHr));
 // 코멘트
 let cm='▶ <strong style="color:'+c+'">'+g+'</strong> '+m+' 생산 '+wFmt(prod)+'EA';
 if(pProd!=null&&prod!=null)cm+=' (전월 대비 '+(prod>=pProd?'<span class="up">▲':'<span class="down">▼')+wFmt(Math.abs(prod-pProd))+'</span>)';
