@@ -68,6 +68,9 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 .st-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text-secondary);}
 .st-table tr:hover td{background:rgba(255,255,255,.02);}
 .btn[data-dept="용접"].active{background:linear-gradient(135deg,rgba(251,146,60,.25),rgba(251,146,60,.08));border-color:var(--coral);color:var(--coral);}
+.weld-2col{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:14px;}
+.weld-panel{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.weld-panel-t{font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;}
 .weld-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
 </style>
 </head>
@@ -85,7 +88,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <button class="btn" data-dept="용접" onclick="setDept('용접')">용접</button>
 </div>
 </div>
-<div id="weldFilters" style="display:none;margin-top:10px;flex-direction:column;gap:5px;"><div class="filter-row"><span class="filter-label">월</span><div class="filter-grid" id="weldMonthChips"></div></div></div>
+<div id="weldFilters" style="display:none;margin-top:10px;flex-direction:column;gap:5px;"><div class="filter-row"><span class="filter-label">월</span><div class="filter-grid" id="weldMonthChips"></div></div><div class="filter-row"><span class="filter-label">호기</span><div class="filter-grid" id="weldMachineChips"></div></div></div>
 <div id="mainFilters" style="margin-top:10px;display:flex;flex-direction:column;gap:5px;">
 <div class="filter-row"><span class="filter-label">연도</span><div class="filter-grid" id="yearChips"></div></div>
 <div class="filter-row"><span class="filter-label">월</span><div class="filter-grid" id="monthChips"></div><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="selectAllMonths()">전체</button><button class="btn" style="font-size:10px;padding:3px 9px;" onclick="selectRecentMonths()">최근 3개월</button></div>
@@ -234,6 +237,26 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <span style="width:3px;height:12px;border-radius:2px;background:var(--coral);display:inline-block;"></span>월 실적 <span id="weldMonthLabel" style="font-weight:400;font-size:10px;"></span>
 </div>
 <div class="weld-grid" id="weldMonthBoard"></div>
+</section>
+<section id="weldMcSection" class="card" style="display:none;">
+<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+<div style="font-size:15px;font-weight:800;" id="weldMcTitle"></div>
+<div style="font-size:11px;color:var(--text-muted);" id="weldMcSub"></div>
+</div>
+<div class="weld-grid" id="weldMcBoard"></div>
+<div id="weldMcComment" style="margin-top:12px;padding:11px 15px;border-radius:6px;font-size:12px;line-height:1.85;color:var(--text-secondary);"></div>
+<div class="weld-2col" style="margin-top:14px;">
+<div class="weld-panel"><div class="weld-panel-t">월별 생산실적 · 시간당 생산량 추이</div><div id="weldMcTrend" style="height:240px;"></div></div>
+<div class="weld-panel"><div class="weld-panel-t">월별 작업시간 구성 (정상 · 야근 · 휴가)</div><div id="weldMcHours" style="height:240px;"></div></div>
+<div class="weld-panel"><div class="weld-panel-t">생산 점유율 <span class="weld-mc-month"></span></div><div id="weldMcShare" style="height:240px;"></div></div>
+<div class="weld-panel"><div class="weld-panel-t">호기별 시간당 생산량 비교 <span class="weld-mc-month"></span></div><div id="weldMcRank" style="height:240px;"></div></div>
+</div>
+<div style="overflow-x:auto;margin-top:14px;">
+<table class="exec" style="width:100%;border-collapse:collapse;">
+<thead><tr><th>월</th><th>생산실적</th><th>점유율</th><th>시간당 생산량</th><th>전체 평균 대비</th><th>근무일</th><th>야근</th><th>휴가차감</th><th>총 작업시간</th><th>휴가 (연차/반차/반반차)</th></tr></thead>
+<tbody id="weldMcTable"></tbody>
+</table>
+</div>
 </section>
 <section class="insight-box" style="border-color:rgba(251,146,60,.35);border-left-color:var(--coral);">
 <div class="insight-title" style="color:var(--coral);">📌 요약 <span id="weldInsightLabel" style="font-weight:400;color:var(--text-muted);font-size:10px;"></span></div>
@@ -942,7 +965,7 @@ wCard(m+' 생산실적',wFmt(M['생산실적']),'var(--sky)','#38BDF8','MONTH',w
 wCard('달성률',wFmt(rate,'%'),wRateColor(rate),'#FBBF24','MONTH',pm?'전월 '+wFmt(wRate(P['생산실적'],P['계획수량']),'%'):'')+
 wCard('총 작업시간',wFmt(M['총 작업시간'],'h'),'var(--teal)','#2DD4BF','MONTH','가동 '+wFmt(wk['가동일(호기×일)'],'일')+' · 야근 '+wFmt(wk['야근횟수'],'회'))+
 wCard('시간당 생산량',wFmt(M['시간당생산량'],' EA'),'var(--coral)','#FB923C','MONTH',wDelta(M['시간당생산량'],P['시간당생산량']));
-renderWeldInsight();renderWeldMonthChart();renderWeldMachine();renderWeldSize();
+renderWeldMc();renderWeldInsight();renderWeldMonthChart();renderWeldMachine();renderWeldSize();
 const b=W.basis;document.getElementById('weldBasis').textContent=b.length?'※ 근무시간 기준: '+b.join(' '):'';}
 
 function renderWeldInsight(){
@@ -1020,7 +1043,7 @@ document.getElementById('weldFilters').style.display='flex';
 document.getElementById('weldView').style.display='flex';
 document.getElementById('dashTitle').textContent='용접작업 실적 현황';
 loadWeld(false);
-setTimeout(()=>[chartWeldMonth,chartWeldMachine,chartWeldSize].forEach(c=>c&&c.resize()),50);}
+setTimeout(()=>[chartWeldMonth,chartWeldMachine,chartWeldSize,chartMcTrend,chartMcHours,chartMcShare,chartMcRank].forEach(c=>c&&c.resize()),50);}
 function hideWeld(){
 document.getElementById('weldView').style.display='none';
 document.getElementById('weldFilters').style.display='none';
@@ -1028,6 +1051,92 @@ document.getElementById('mainView').style.display='flex';
 document.getElementById('mainFilters').style.display='flex';
 setTimeout(()=>[chartMain,chartPlan,chartStock,chartLoad,chartLoadProcess].forEach(c=>c&&c.resize()),50);}
 window.addEventListener('resize',()=>[chartWeldMonth,chartWeldMachine,chartWeldSize].forEach(c=>c&&c.resize()));
+</script>
+<script>
+// ===== 용접 호기별 상세 =====
+let weldMachine=null,chartMcTrend,chartMcHours,chartMcShare,chartMcRank;
+function selectWeldMachine(g){weldMachine=(g==='전체'||g===weldMachine)?null:g;renderWeld();}
+function renderWeldMachineChips(){
+const el=document.getElementById('weldMachineChips');if(!el||!WELD)return;
+const opts=['전체',...WELD.machine.groups];
+el.innerHTML=opts.map(g=>{const on=(g==='전체'&&!weldMachine)||g===weldMachine;const c=WELD_COLORS[g]||'#C9D1D9';
+return '<span class="chip" style="color:'+c+';border-color:'+c+(on?'':'55')+';background:'+c+(on?'33':'0D')+';'+(on?'box-shadow:0 0 8px '+c+'44;':'')+'" onclick="selectWeldMachine(\''+g+'\')">'+g+'</span>';}).join('');}
+function mcVal(sec,m,g,k){return(((WELD[sec].data[m]||{})[g])||{})[k]??null;}
+function renderWeldMc(){
+renderWeldMachineChips();
+const sec=document.getElementById('weldMcSection');
+if(!WELD||!weldMachine){sec.style.display='none';return;}
+const wasHidden=sec.style.display==='none';sec.style.display='';
+const W=WELD,g=weldMachine,m=weldMonth,c=WELD_COLORS[g]||'#38BDF8',ms=W.active,gs=W.machine.groups;
+const idx=ms.indexOf(m),pm=idx>0?ms[idx-1]:null;
+sec.style.borderColor=c+'66';
+document.getElementById('weldMcTitle').innerHTML='<span style="color:'+c+'">● '+g+'</span> 상세 현황';
+document.getElementById('weldMcSub').textContent='선택 월: '+m+' · 다시 누르거나 [전체]를 누르면 닫힙니다';
+document.querySelectorAll('.weld-mc-month').forEach(e=>e.textContent='('+m+')');
+// 값
+const prod=mcVal('machine',m,g,'생산실적'),hr=mcVal('machine',m,g,'시간당생산량'),avg=(W.monthly[m]||{})['시간당생산량'];
+const pProd=pm?mcVal('machine',pm,g,'생산실적'):null,pHr=pm?mcVal('machine',pm,g,'시간당생산량'):null;
+const tot=gs.reduce((s,x)=>s+(mcVal('machine',m,x,'생산실적')||0),0),share=tot&&prod!=null?prod/tot*100:null;
+const yProd=mcVal('machine','연간 합계',g,'생산실적'),yHr=mcVal('machine','연간 합계',g,'시간당생산량'),yH=mcVal('work','연간 합계',g,'총 작업시간');
+const days=mcVal('work',m,g,'근무일'),otN=mcVal('work',m,g,'야근횟수'),otH=mcVal('work',m,g,'야근시간'),hrs=mcVal('work',m,g,'총 작업시간'),vac=mcVal('work',m,g,'휴가차감');
+const rank=gs.map(x=>({x,v:mcVal('machine',m,x,'시간당생산량')})).filter(o=>o.v!=null).sort((a,b)=>b.v-a.v);
+const rk=rank.findIndex(o=>o.x===g)+1;
+document.getElementById('weldMcBoard').innerHTML=
+wCard(m+' 생산실적',wFmt(prod),c,c,'MONTH',wDelta(prod,pProd))+
+wCard(m+' 시간당 생산량',wFmt(hr,' EA'),hr!=null&&avg!=null&&hr>=avg?'var(--emerald)':'var(--rose)','#34D399','MONTH','전체 평균 '+wFmt(avg)+(rk?' · '+rank.length+'대 중 '+rk+'위':''))+
+wCard('생산 점유율',wFmt(share,'%'),'var(--violet)','#A78BFA','MONTH','전체 '+wFmt(tot)+' 중')+
+wCard(m+' 작업시간',wFmt(hrs,'h'),'var(--teal)','#2DD4BF','MONTH','근무 '+wFmt(days,'일')+' · 야근 '+wFmt(otN,'회')+' · 휴가 '+wFmt(vac,'h'))+
+wCard('연간 누적',wFmt(yProd),'var(--text-secondary)','#8B949E','YTD','작업 '+wFmt(yH,'h')+' · 시간당 '+wFmt(yHr));
+// 코멘트
+let cm='▶ <strong style="color:'+c+'">'+g+'</strong> '+m+' 생산 '+wFmt(prod)+'EA';
+if(pProd!=null&&prod!=null)cm+=' (전월 대비 '+(prod>=pProd?'<span class="up">▲':'<span class="down">▼')+wFmt(Math.abs(prod-pProd))+'</span>)';
+if(hr!=null&&avg!=null){const d=(hr/avg-1)*100;cm+=', 시간당 '+wFmt(hr)+'EA로 전체 평균보다 '+(d>=0?'<span class="up">'+d.toFixed(1)+'% 높음</span>':'<span class="down">'+Math.abs(d).toFixed(1)+'% 낮음</span>');}
+if(pHr!=null&&hr!=null)cm+=' · 전월 '+wFmt(pHr)+'EA';
+if(otH)cm+='<br>▶ 야근 '+wFmt(otN,'회')+'('+wFmt(otH,'h')+')가 작업시간의 '+(hrs?(otH/hrs*100).toFixed(0):'-')+'%를 차지';
+const cm2=document.getElementById('weldMcComment');cm2.innerHTML=cm;cm2.style.background=c+'0F';cm2.style.borderLeft='3px solid '+c;
+// 차트
+const ax={...W_AXIS},sel=i=>ms[i]===m;
+if(!chartMcTrend){chartMcTrend=echarts.init(document.getElementById('weldMcTrend'));chartMcTrend.on('click',p=>selectWeldMonth(p.name));}
+chartMcTrend.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:['생산실적','시간당 생산량','전체 평균(시간당)'],textStyle:{color:'#C9D1D9',fontSize:10},top:0},grid:{left:48,right:40,top:52,bottom:28},
+xAxis:{type:'category',data:ms,...ax},yAxis:[W_VAXIS,{type:'value',scale:true,axisLabel:{color:'#8B949E',fontSize:10},splitLine:{show:false}}],
+series:[{name:'생산실적',type:'bar',data:ms.map((mm,i)=>({value:mcVal('machine',mm,g,'생산실적'),itemStyle:{color:sel(i)?c:c+'77',borderRadius:[4,4,0,0]}})),label:{show:true,position:'top',color:'#C9D1D9',fontSize:10,formatter:p=>p.value==null?'':Number(p.value).toLocaleString()}},
+{name:'시간당 생산량',type:'line',yAxisIndex:1,data:ms.map(mm=>mcVal('machine',mm,g,'시간당생산량')),symbolSize:7,lineStyle:{color:'#FBBF24',width:2},itemStyle:{color:'#FBBF24'},connectNulls:true},
+{name:'전체 평균(시간당)',type:'line',yAxisIndex:1,data:ms.map(mm=>(W.monthly[mm]||{})['시간당생산량']??null),symbol:'none',lineStyle:{color:'#8B949E',type:'dashed',width:1.5},itemStyle:{color:'#8B949E'},connectNulls:true}]},true);
+if(!chartMcHours){chartMcHours=echarts.init(document.getElementById('weldMcHours'));chartMcHours.on('click',p=>selectWeldMonth(p.name));}
+const normal=ms.map(mm=>{const t=mcVal('work',mm,g,'총 작업시간');return t==null?null:t-(mcVal('work',mm,g,'야근시간')||0);});
+chartMcHours.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,legend:{data:['정상근무','야근','휴가차감'],textStyle:{color:'#C9D1D9',fontSize:10},top:0},grid:{left:48,right:20,top:40,bottom:28},
+xAxis:{type:'category',data:ms,...ax},yAxis:{...W_VAXIS,axisLabel:{color:'#8B949E',fontSize:10,formatter:'{value}h'}},
+series:[{name:'정상근무',type:'bar',stack:'h',data:normal,itemStyle:{color:'#2DD4BF'}},
+{name:'야근',type:'bar',stack:'h',data:ms.map(mm=>mcVal('work',mm,g,'야근시간')),itemStyle:{color:'#FB923C'}},
+{name:'휴가차감',type:'bar',stack:'h',data:ms.map(mm=>mcVal('work',mm,g,'휴가차감')),itemStyle:{color:'rgba(139,148,158,.35)',borderRadius:[4,4,0,0],borderColor:'#8B949E',borderType:'dashed'}}]},true);
+if(!chartMcShare)chartMcShare=echarts.init(document.getElementById('weldMcShare'));
+chartMcShare.setOption({backgroundColor:'transparent',tooltip:{trigger:'item',backgroundColor:'rgba(22,27,34,.95)',borderColor:'#30363D',textStyle:{color:'#F0F6FC',fontSize:12},formatter:p=>p.name+'<br>'+Number(p.value).toLocaleString()+' EA ('+p.percent+'%)'},
+title:{text:wFmt(share,'%'),subtext:g+' 점유율',left:'center',top:'40%',textStyle:{color:c,fontSize:20,fontWeight:700,fontFamily:'IBM Plex Sans'},subtextStyle:{color:'#8B949E',fontSize:11}},
+series:[{type:'pie',radius:['52%','76%'],center:['50%','52%'],avoidLabelOverlap:true,label:{color:'#C9D1D9',fontSize:11,formatter:'{b}\n{d}%'},
+data:gs.map(x=>({name:x,value:mcVal('machine',m,x,'생산실적')||0,itemStyle:{color:x===g?c:(WELD_COLORS[x]||'#8B949E')+'40',borderColor:'#161B22',borderWidth:2}})).filter(d=>d.value>0)}]},true);
+if(!chartMcRank)chartMcRank=echarts.init(document.getElementById('weldMcRank'));
+const rr=[...rank].reverse();
+chartMcRank.setOption({backgroundColor:'transparent',tooltip:W_TOOLTIP,grid:{left:55,right:45,top:15,bottom:25},
+xAxis:{...W_VAXIS,axisLabel:{color:'#8B949E',fontSize:10}},yAxis:{type:'category',data:rr.map(o=>o.x),axisLine:{lineStyle:{color:'#30363D'}},axisLabel:{color:'#C9D1D9',fontSize:11}},
+series:[{type:'bar',data:rr.map(o=>({value:o.v,itemStyle:{color:o.x===g?c:(WELD_COLORS[o.x]||'#8B949E')+'40',borderRadius:[0,4,4,0]}})),barWidth:'55%',
+label:{show:true,position:'right',color:'#C9D1D9',fontSize:11,formatter:p=>p.value+' EA/h'},
+markLine:avg!=null?{symbol:'none',data:[{xAxis:avg}],lineStyle:{color:'#FBBF24',type:'dashed'},label:{color:'#FBBF24',fontSize:10,formatter:'평균 '+avg}}:undefined}]},true);
+// 표
+document.getElementById('weldMcTable').innerHTML=ms.map(mm=>{
+const p=mcVal('machine',mm,g,'생산실적'),h=mcVal('machine',mm,g,'시간당생산량'),a=(W.monthly[mm]||{})['시간당생산량'];
+const t=gs.reduce((s,x)=>s+(mcVal('machine',mm,x,'생산실적')||0),0);const d=h!=null&&a?(h/a-1)*100:null;
+return '<tr style="cursor:pointer;'+(mm===m?'background:'+c+'14;':'')+'" onclick="selectWeldMonth(\''+mm+'\')"><td style="font-weight:600;color:'+(mm===m?c:'var(--text-secondary)')+';">'+mm+'</td>'+
+'<td class="num">'+wFmt(p)+'</td><td class="num">'+(t&&p!=null?(p/t*100).toFixed(1)+'%':'—')+'</td><td class="num">'+wFmt(h)+'</td>'+
+'<td class="num">'+(d==null?'—':(d>=0?'<span class="up">+':'<span class="down">')+d.toFixed(1)+'%</span>')+'</td>'+
+'<td class="num">'+wFmt(mcVal('work',mm,g,'근무일'),'일')+'</td><td class="num">'+wFmt(mcVal('work',mm,g,'야근횟수'),'회')+' / '+wFmt(mcVal('work',mm,g,'야근시간'),'h')+'</td>'+
+'<td class="num">'+wFmt(mcVal('work',mm,g,'휴가차감'),'h')+'</td><td class="num">'+wFmt(mcVal('work',mm,g,'총 작업시간'),'h')+'</td>'+
+'<td class="num">'+wFmt(mcVal('leave',mm,g,'연차'))+' / '+wFmt(mcVal('leave',mm,g,'반차'))+' / '+wFmt(mcVal('leave',mm,g,'반반차'))+'</td></tr>';}).join('')+
+(()=>{const p=mcVal('machine','연간 합계',g,'생산실적'),t=gs.reduce((s,x)=>s+(mcVal('machine','연간 합계',x,'생산실적')||0),0);
+return '<tr style="border-top:2px solid '+c+';font-weight:700;background:'+c+'1F;"><td style="color:'+c+';">연간 합계</td><td class="num">'+wFmt(p)+'</td><td class="num">'+(t&&p!=null?(p/t*100).toFixed(1)+'%':'—')+'</td><td class="num">'+wFmt(mcVal('machine','연간 합계',g,'시간당생산량'))+'</td><td class="num">—</td>'+
+'<td class="num">'+wFmt(mcVal('work','연간 합계',g,'근무일'),'일')+'</td><td class="num">'+wFmt(mcVal('work','연간 합계',g,'야근횟수'),'회')+' / '+wFmt(mcVal('work','연간 합계',g,'야근시간'),'h')+'</td><td class="num">'+wFmt(mcVal('work','연간 합계',g,'휴가차감'),'h')+'</td><td class="num">'+wFmt(mcVal('work','연간 합계',g,'총 작업시간'),'h')+'</td>'+
+'<td class="num">'+wFmt(mcVal('leave','연간 합계',g,'연차'))+' / '+wFmt(mcVal('leave','연간 합계',g,'반차'))+' / '+wFmt(mcVal('leave','연간 합계',g,'반반차'))+'</td></tr>';})();
+if(wasHidden)setTimeout(()=>[chartMcTrend,chartMcHours,chartMcShare,chartMcRank].forEach(x=>x&&x.resize()),30);}
+window.addEventListener('resize',()=>[chartMcTrend,chartMcHours,chartMcShare,chartMcRank].forEach(c=>c&&c.resize()));
 </script>
 </body>
 </html>
