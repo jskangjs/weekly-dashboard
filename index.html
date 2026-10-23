@@ -1254,13 +1254,14 @@ function otHas(m){return mcVal('work',m,'전체','야근시간')!=null||WELD.mac
 function otTot(m){const t=mcVal('work',m,'전체','야근시간');return t!=null?t:WELD.machine.groups.reduce((s,g)=>s+(mcVal('work',m,g,'야근시간')||0),0);}
 function otCnt(m){const t=mcVal('work',m,'전체','야근횟수');return t!=null?t:WELD.machine.groups.reduce((s,g)=>s+(mcVal('work',m,g,'야근횟수')||0),0);}
 function otMcCard(g,m,pm,maxv){
-const c=WELD_COLORS[g]||'#8B949E',v=mcVal('work',m,g,'야근시간'),n=mcVal('work',m,g,'야근횟수'),h=mcVal('work',m,g,'총 작업시간'),pv=pm&&otHas(pm)?mcVal('work',pm,g,'야근시간'):null;
+const c=WELD_COLORS[g]||'#8B949E',v=mcVal('work',m,g,'야근시간')??(otHas(m)&&(mcVal('work',m,g,'총 작업시간')||0)>0?0:null),n=mcVal('work',m,g,'야근횟수')??(v===0?0:null),h=mcVal('work',m,g,'총 작업시간'),pv=pm&&otHas(pm)?mcVal('work',pm,g,'야근시간'):null;
 const w=maxv&&v!=null?v/maxv*100:0;
 let d='';if(v!=null&&pv!=null){const x=v-pv;d=' · 전월 '+(x>0?'<span class="down">▲'+wFmt(x)+'h</span>':x<0?'<span class="up">▼'+wFmt(-x)+'h</span>':'±0h');}
 return '<div class="score-card" style="--accent-color:'+c+';"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;"><div class="weld-card-t" style="color:'+c+';">'+g+' 야근</div><span class="score-badge" style="margin:0;background:'+c+'22;color:'+c+';">MONTH</span></div>'+
 '<div class="score-num weld-card-v" style="color:'+c+';">'+wU(v,'h')+'</div>'+
 '<div class="std-bar"><i style="width:'+w+'%;background:'+c+';"></i></div>'+
 '<div class="score-delta" style="color:var(--text-muted);">'+wFmt(n,'회')+' · 작업시간의 '+(h&&v!=null?wFmt(v/h*100,'%'):'—')+d+'</div></div>';}
+function otSpan(h){return h.replace('class="score-card" style="','class="score-card" style="grid-column:span 2;');}
 function renderWeldOt(){
 const W=WELD,m=weldMonth,gs=W.machine.groups,ms=W.active.filter(otHas),all=ms.length?W.active.slice(W.active.indexOf(ms[0])):[];
 const firstM=ms[0];
@@ -1276,10 +1277,8 @@ const top=gs.map(g=>({g,v:mcVal('work',m,g,'야근시간')})).filter(o=>o.v!=nul
 const maxv=top.length?top[0].v:0;
 let dl='';if(tot!=null&&ptot!=null){const x=tot-ptot;dl=' · 전월 '+(x>0?'<span class="down">▲'+wFmt(x)+'h</span>':x<0?'<span class="up">▼'+wFmt(-x)+'h</span>':'±0h')+' ('+wFmt(ptot,'h')+')';}
 document.getElementById('weldOtBoard').innerHTML=
-wCard(m+' 전체 야근',wU(tot,'h'),'var(--coral)','#FB923C','MONTH',wFmt(cnt,'회')+dl)+
-wCard('호기 1대 평균',wU(tot==null?null:+(tot/nAct).toFixed(1),'h'),'var(--amber)','#FBBF24','MONTH','가동 '+nAct+'대 · 작업시간 중 '+(tot!=null&&hrs?wFmt(tot/hrs*100,'%'):'—'))+
-wCard(S&&!S.done?'월말 예상 야근':'월 야근 (마감)',wU(pace!=null?Math.round(pace):tot,'h'),'var(--rose)','#F87171',S&&!S.done?'FORECAST':'MONTH',pace!=null?'현재 페이스 기준 · '+S.elapsed+'/'+S.days+'일 경과':(S&&S.done?'월 마감 실적':'—'))+
-wCard('누적 야근',wU(ms.length?yTot:null,'h'),'var(--text-secondary)','#8B949E','YTD',ms.length?ms.length+'개월 · 월평균 '+wFmt(+(yTot/ms.length).toFixed(1),'h')+' · 작업시간 중 '+(yHrs?wFmt(yTot/yHrs*100,'%'):'—'):'—')+
+otSpan(wCard('누적 야근',wU(ms.length?yTot:null,'h'),'var(--text-secondary)','#8B949E','YTD',ms.length?ms.length+'개월 · 월평균 '+wFmt(+(yTot/ms.length).toFixed(1),'h')+' · 작업시간 중 '+(yHrs?wFmt(yTot/yHrs*100,'%'):'—'):'—'))+
+otSpan(wCard(m+' 전체 야근',wU(tot,'h'),'var(--coral)','#FB923C','MONTH',wFmt(cnt,'회')+dl))+
 gs.slice(0,4).map(g=>otMcCard(g,m,pm,maxv)).join('');
 // 차트
 if(!chartWeldOt){chartWeldOt=echarts.init(document.getElementById('weldOtChart'));chartWeldOt.on('click',p=>selectWeldMonth(p.name));}
