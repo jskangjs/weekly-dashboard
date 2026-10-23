@@ -1023,8 +1023,8 @@ wCard(m+' 계획',wEA(M['계획수량']),'var(--text-secondary)','#8B949E','MONT
 wCard(m+' 생산실적',wEA(M['생산실적']),'var(--sky)','#38BDF8','MONTH',wDelta(M['생산실적'],P['생산실적']))+
 wCard('달성률',wFmt(rate,'%'),wRateColor(rate),'#FBBF24','MONTH',pm?'전월 '+wFmt(wRate(P['생산실적'],P['계획수량']),'%'):'')+
 wCard('시간당 생산량',wU(M['시간당생산량'],'EA/h'),'var(--coral)','#FB923C','MONTH',wDelta(M['시간당생산량'],P['시간당생산량']))+
-wCard(m+' 총 작업시간',wU(M['총 작업시간'],'h'),'var(--teal)','#2DD4BF','MONTH','가동 '+wFmt(wk['가동일(호기×일)'],'일')+' · 야근 '+wFmt(wk['야근횟수'],'회'))+
-(SA.std||'')+(SA.ot||'')+(SA.rate||'');
+(SA.std||'')+
+wCard(m+' 총 작업시간',wU(M['총 작업시간'],'h'),'var(--teal)','#2DD4BF','MONTH','가동 '+wFmt(wk['가동일(호기×일)'],'일')+' · 야근 '+wFmt(wk['야근횟수'],'회'))+(SA.ot||'')+(SA.rate||'');
 renderWeldMc();renderWeldInsight();renderWeldMonthChart();renderWeldMachine();renderWeldSize();
 const b=W.basis;document.getElementById('weldBasis').textContent=b.length?'※ 근무시간 기준: '+b.join(' '):'';}
 
