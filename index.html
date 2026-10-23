@@ -76,6 +76,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 .weld-unit{font-size:.5em;font-weight:600;margin-left:4px;opacity:.75;}
 .std-bar{height:6px;border-radius:3px;background:rgba(139,148,158,.18);overflow:hidden;margin:6px 0 4px;position:relative;}.std-bar>i{display:block;height:100%;border-radius:3px;}.std-bar>b{position:absolute;top:-2px;bottom:-2px;width:2px;background:#F0F6FC;opacity:.7;}
 .weld-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
+.weld-grid5{grid-template-columns:repeat(5,minmax(0,1fr));}@media(max-width:900px){.weld-grid5{grid-template-columns:repeat(2,minmax(0,1fr));}}
 </style>
 </head>
 <body>
@@ -253,9 +254,9 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <div style="font-size:17px;font-weight:800;" id="weldMcTitle"></div>
 <div style="font-size:12px;color:var(--text-muted);" id="weldMcSub"></div>
 </div>
-<div class="weld-grid" id="weldMcBoard"></div>
+<div class="weld-grid weld-grid5" id="weldMcBoard"></div>
 <div style="font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;margin:14px 0 8px;display:flex;align-items:center;gap:8px;"><span style="width:3px;height:12px;border-radius:2px;background:var(--teal);display:inline-block;"></span>기준시간 대비 작업시간 <span id="weldMcStdLabel" style="font-weight:400;font-size:11px;"></span></div>
-<div class="weld-grid" id="weldMcStdBoard"></div>
+<div class="weld-grid weld-grid5" id="weldMcStdBoard"></div>
 <div id="weldMcComment" style="margin-top:12px;padding:11px 15px;border-radius:6px;font-size:13px;line-height:1.85;color:var(--text-secondary);"></div>
 <div class="weld-2col" style="margin-top:14px;">
 <div class="weld-panel"><div class="weld-panel-t">월별 생산실적 · 시간당 생산량 추이</div><div id="weldMcTrend" style="height:240px;"></div></div>
@@ -972,19 +973,20 @@ function stdColor(r){return r==null?'var(--text-muted)':r>=100?'var(--emerald)':
 function stdBar(r,mark,color){const w=Math.max(0,Math.min(r||0,130))/130*100,mk=mark!=null?Math.min(mark,130)/130*100:null;
 return '<div class="std-bar"><i style="width:'+w+'%;background:'+color+';"></i>'+(mk!=null?'<b style="left:'+mk+'%;"></b>':'')+'</div>';}
 // n: 호기 수, hrs/otH/vac: 작업·야근·휴가 시간, ytd:{work,std,label}
-function stdCards(m,n,hrs,otH,vac,ytd,otN){
-const S=stdMonth(m);if(!S)return '';
+function stdCards(m,n,hrs,otH,vac,ytd,otN){const P=stdParts(m,n,hrs,otH,vac,ytd,otN);return P?P.std+P.el+P.rate+P.ot+P.ytd:'';}
+function stdParts(m,n,hrs,otH,vac,ytd,otN){
+const S=stdMonth(m);if(!S)return null;
 const std=S.std*n,stdE=S.stdE*n,remainH=S.remain*STD_DAY_H*n;
 const normal=hrs==null?null:hrs-(otH||0);
 const rE=hrs!=null&&stdE?hrs/stdE*100:null,rM=hrs!=null&&std?hrs/std*100:null,rN=normal!=null&&stdE?normal/stdE*100:null;
 const nTxt=n>1?n+'대 × ':'';
 const holTxt=S.hol.length?'공휴일 '+S.hol.length+'일 ('+S.hol.join(', ')+')':'공휴일 없음';
 const yr=ytd&&ytd.std?ytd.work/ytd.std*100:null;
-return wCard(m+' 기준시간',wU(std,'h'),'var(--text-primary)','#8B949E','MONTH',nTxt+'근무일 '+S.days+'일 × '+STD_DAY_H+'h<br>평일 '+S.weekdays+'일 − '+holTxt)+
-wCard(S.done?'경과 기준시간':S.elapsed?'경과 기준 ('+S.cut+'까지)':'경과 기준 (시작 전)',wU(stdE,'h'),'var(--sky)','#38BDF8',S.done?'마감':'TO-DATE',S.done?'월 전체 경과':S.elapsed+'일 경과 · 잔여 '+S.remain+'일 ('+wFmt(remainH,'h')+' 가용)')+
-wCard('기준 대비 작업',wFmt(rE,'%'),stdColor(rE),'#2DD4BF','MONTH',stdBar(rE,100,'#2DD4BF')+'작업 '+wFmt(hrs,'h')+' / 경과기준 '+wFmt(stdE,'h')+(S.done?'':' · 월기준 대비 '+wFmt(rM,'%')))+
-wCard(m+' 야근시간',wU(otH||0,'h'),'var(--coral)','#FB923C','MONTH',stdBar(otH&&stdE?otH/stdE*100:0,null,'#FB923C')+'야근 '+wFmt(otN||0,'회')+' · 작업시간의 '+(hrs?wFmt((otH||0)/hrs*100,'%'):'—')+' · 경과기준 대비 +'+(stdE?wFmt((otH||0)/stdE*100,'%'):'—'))+
-wCard('연간 기준 대비',wFmt(yr,'%'),stdColor(yr),'#A78BFA','YTD',stdBar(yr,100,'#A78BFA')+(ytd?'작업 '+wFmt(ytd.work,'h')+' / 기준 '+wFmt(ytd.std,'h')+' · '+ytd.label:''));}
+return{std:wCard(m+' 기준시간',wU(std,'h'),'var(--text-primary)','#8B949E','MONTH',nTxt+'근무일 '+S.days+'일 × '+STD_DAY_H+'h<br>평일 '+S.weekdays+'일 − '+holTxt),
+el:wCard(S.done?'경과 기준시간':S.elapsed?'경과 기준 ('+S.cut+'까지)':'경과 기준 (시작 전)',wU(stdE,'h'),'var(--sky)','#38BDF8',S.done?'마감':'TO-DATE',S.done?'월 전체 경과':S.elapsed+'일 경과 · 잔여 '+S.remain+'일 ('+wFmt(remainH,'h')+' 가용)'),
+rate:wCard('기준 대비 작업시간',wFmt(rE,'%'),stdColor(rE),'#2DD4BF','MONTH',stdBar(rE,100,'#2DD4BF')+'작업 '+wFmt(hrs,'h')+' / 경과기준 '+wFmt(stdE,'h')+(S.done?'':' · 월기준 대비 '+wFmt(rM,'%'))),
+ot:wCard(m+' 야근시간',wU(otH||0,'h'),'var(--coral)','#FB923C','MONTH',stdBar(otH&&stdE?otH/stdE*100:0,null,'#FB923C')+'야근 '+wFmt(otN||0,'회')+' · 작업시간의 '+(hrs?wFmt((otH||0)/hrs*100,'%'):'—')+' · 경과기준 대비 +'+(stdE?wFmt((otH||0)/stdE*100,'%'):'—')),
+ytd:wCard('연간 기준 대비',wFmt(yr,'%'),stdColor(yr),'#A78BFA','YTD',stdBar(yr,100,'#A78BFA')+(ytd?'작업 '+wFmt(ytd.work,'h')+' / 기준 '+wFmt(ytd.std,'h')+' · '+ytd.label:''))};}
 function stdYtd(getN,work){
 const ms=WELD.active.filter(mm=>{const S=stdMonth(mm);return S&&S.elapsed>0;});
 const std=ms.reduce((s,mm)=>s+stdMonth(mm).stdE*getN(mm),0);
@@ -999,7 +1001,7 @@ function renderWeldStdMc(g){
 const m=weldMonth;
 document.getElementById('weldMcStdLabel').textContent='('+m+' · 1일 '+STD_DAY_H+'h · 한국 공휴일 반영)';
 const ytdMs=WELD.active.filter(mm=>(mcVal('work',mm,g,'총 작업시간')||0)>0||mm===m);
-document.getElementById('weldMcStdBoard').innerHTML=stdCards(m,1,mcVal('work',m,g,'총 작업시간'),mcVal('work',m,g,'야근시간'),mcVal('work',m,g,'휴가차감'),
+return stdParts(m,1,mcVal('work',m,g,'총 작업시간'),mcVal('work',m,g,'야근시간'),mcVal('work',m,g,'휴가차감'),
 stdYtd(mm=>ytdMs.includes(mm)?1:0,mcVal('work','연간 합계',g,'총 작업시간')),mcVal('work',m,g,'야근횟수'));}
 
 function selectWeldMonth(m){if(WELD&&WELD.active.includes(m)){weldMonth=m;renderWeld();}}
@@ -1147,13 +1149,14 @@ const yProd=mcVal('machine','연간 합계',g,'생산실적'),yHr=mcVal('machine
 const days=mcVal('work',m,g,'근무일'),otN=mcVal('work',m,g,'야근횟수'),otH=mcVal('work',m,g,'야근시간'),hrs=mcVal('work',m,g,'총 작업시간'),vac=mcVal('work',m,g,'휴가차감');
 const rank=gs.map(x=>({x,v:mcVal('machine',m,x,'시간당생산량')})).filter(o=>o.v!=null).sort((a,b)=>b.v-a.v);
 const rk=rank.findIndex(o=>o.x===g)+1;
-document.getElementById('weldMcBoard').innerHTML=
-wCard(m+' 생산실적',wEA(prod),c,c,'MONTH',wDelta(prod,pProd))+
-wCard('시간당 생산량',wU(hr,'EA/h'),hr!=null&&avg!=null&&hr>=avg?'var(--emerald)':'var(--rose)','#34D399','MONTH','전체 평균 '+wFmt(avg)+(rk?' · '+rank.length+'대 중 '+rk+'위':''))+
-wCard('생산 점유율',wFmt(share,'%'),'var(--violet)','#A78BFA','MONTH','전체 '+wFmt(tot)+' 중')+
-wCard(m+' 작업시간',wU(hrs,'h'),'var(--teal)','#2DD4BF','MONTH','근무 '+wFmt(days,'일')+' · 야근 '+wFmt(otN,'회')+' · 휴가 '+wFmt(vac,'h'))+
-wCard('연간 누적',wEA(yProd),'var(--text-secondary)','#8B949E','YTD','작업 '+wFmt(yH,'h')+' · 시간당 '+wFmt(yHr));
-renderWeldStdMc(g);
+const cProd=wCard(m+' 생산실적',wEA(prod),c,c,'MONTH',wDelta(prod,pProd)),
+cHr=wCard('시간당 생산량',wU(hr,'EA/h'),hr!=null&&avg!=null&&hr>=avg?'var(--emerald)':'var(--rose)','#34D399','MONTH','전체 평균 '+wFmt(avg)+(rk?' · '+rank.length+'대 중 '+rk+'위':'')),
+cShare=wCard('생산 점유율',wFmt(share,'%'),'var(--violet)','#A78BFA','MONTH','전체 '+wFmt(tot)+' 중'),
+cHrs=wCard(m+' 작업시간',wU(hrs,'h'),'var(--teal)','#2DD4BF','MONTH','근무 '+wFmt(days,'일')+' · 야근 '+wFmt(otN,'회')+' · 휴가 '+wFmt(vac,'h')),
+cYtd=wCard('연간 누적',wEA(yProd),'var(--text-secondary)','#8B949E','YTD','작업 '+wFmt(yH,'h')+' · 시간당 '+wFmt(yHr));
+document.getElementById('weldMcBoard').innerHTML=cYtd+cProd+cHrs+cHr+cShare;
+const SP=renderWeldStdMc(g);
+document.getElementById('weldMcStdBoard').innerHTML=SP?SP.std+SP.ot+SP.rate:'';
 // 코멘트
 let cm='▶ <strong style="color:'+c+'">'+g+'</strong> '+m+' 생산 '+wFmt(prod)+'EA';
 if(pProd!=null&&prod!=null)cm+=' (전월 대비 '+(prod>=pProd?'<span class="up">▲':'<span class="down">▼')+wFmt(Math.abs(prod-pProd))+'</span>)';
