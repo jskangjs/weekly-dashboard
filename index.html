@@ -1147,7 +1147,7 @@ cShare=wCard('생산 점유율',wFmt(share,'%'),'var(--violet)','#A78BFA','MONTH
 cHrs=wCard(m+' 작업시간',wU(hrs,'h'),'var(--teal)','#2DD4BF','MONTH','근무 '+wFmt(days,'일')+' · 야근 '+wFmt(otN,'회')+' · 휴가 '+wFmt(vac,'h')),
 cYtd=wCard('연간 누적',wEA(yProd),'var(--text-secondary)','#8B949E','YTD','작업 '+wFmt(yH,'h')+' · 시간당 '+wFmt(yHr));
 const SP=renderWeldStdMc(g)||{};
-document.getElementById('weldMcBoard').innerHTML=cYtd+cProd+cHrs+cHr+cShare+(SP.std||'')+(SP.ot||'')+(SP.rate||'');
+document.getElementById('weldMcBoard').innerHTML=cYtd+(SP.std||'')+cHr+(SP.ot||'')+cProd+cHrs+cShare+(SP.rate||'');
 // 코멘트
 let cm='▶ <strong style="color:'+c+'">'+g+'</strong> '+m+' 생산 '+wFmt(prod)+'EA';
 if(pProd!=null&&prod!=null)cm+=' (전월 대비 '+(prod>=pProd?'<span class="up">▲':'<span class="down">▼')+wFmt(Math.abs(prod-pProd))+'</span>)';
