@@ -87,9 +87,9 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 </div>
 <div style="display:flex;gap:8px;align-items:center;">
 <span style="font-size:12px;color:var(--text-muted);">부서</span>
-<button class="btn active" data-dept="1반" onclick="setDept('1반')">1반 (액상)</button>
+<button class="btn" data-dept="1반" onclick="setDept('1반')">1반 (액상)</button>
 <button class="btn" data-dept="2반" onclick="setDept('2반')">2반 (카테터)</button>
-<button class="btn" data-dept="용접" onclick="setDept('용접')">용접</button>
+<button class="btn active" data-dept="용접" onclick="setDept('용접')">용접</button>
 </div>
 </div>
 <div id="weldFilters" style="display:none;margin-top:10px;flex-direction:column;gap:5px;"><div class="filter-row"><span class="filter-label">월</span><div class="filter-grid" id="weldMonthChips"></div></div><div class="filter-row"><span class="filter-label">호기</span><div class="filter-grid" id="weldMachineChips"></div></div></div>
@@ -847,6 +847,7 @@ async function fetchSheetData(){
 // ─────────────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded',async()=>{
 document.getElementById('nowTime').textContent=nowTime();
+showWeld(); // 시작 화면: 용접
 const sheetData=await fetchSheetData();
 if(sheetData){
   // 안전재고 업데이트
