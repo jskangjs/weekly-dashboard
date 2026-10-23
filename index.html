@@ -972,7 +972,7 @@ function stdColor(r){return r==null?'var(--text-muted)':r>=100?'var(--emerald)':
 function stdBar(r,mark,color){const w=Math.max(0,Math.min(r||0,130))/130*100,mk=mark!=null?Math.min(mark,130)/130*100:null;
 return '<div class="std-bar"><i style="width:'+w+'%;background:'+color+';"></i>'+(mk!=null?'<b style="left:'+mk+'%;"></b>':'')+'</div>';}
 // n: 호기 수, hrs/otH/vac: 작업·야근·휴가 시간, ytd:{work,std,label}
-function stdCards(m,n,hrs,otH,vac,ytd){
+function stdCards(m,n,hrs,otH,vac,ytd,otN){
 const S=stdMonth(m);if(!S)return '';
 const std=S.std*n,stdE=S.stdE*n,remainH=S.remain*STD_DAY_H*n;
 const normal=hrs==null?null:hrs-(otH||0);
@@ -983,7 +983,7 @@ const yr=ytd&&ytd.std?ytd.work/ytd.std*100:null;
 return wCard(m+' 기준시간',wU(std,'h'),'var(--text-primary)','#8B949E','MONTH',nTxt+'근무일 '+S.days+'일 × '+STD_DAY_H+'h<br>평일 '+S.weekdays+'일 − '+holTxt)+
 wCard(S.done?'경과 기준시간':S.elapsed?'경과 기준 ('+S.cut+'까지)':'경과 기준 (시작 전)',wU(stdE,'h'),'var(--sky)','#38BDF8',S.done?'마감':'TO-DATE',S.done?'월 전체 경과':S.elapsed+'일 경과 · 잔여 '+S.remain+'일 ('+wFmt(remainH,'h')+' 가용)')+
 wCard('기준 대비 작업',wFmt(rE,'%'),stdColor(rE),'#2DD4BF','MONTH',stdBar(rE,100,'#2DD4BF')+'작업 '+wFmt(hrs,'h')+' / 경과기준 '+wFmt(stdE,'h')+(S.done?'':' · 월기준 대비 '+wFmt(rM,'%')))+
-wCard('정상근무 대비',wFmt(rN,'%'),stdColor(rN),'#34D399','MONTH',stdBar(rN,100,'#34D399')+'야근 제외 '+wFmt(normal,'h')+' · 야근 '+wFmt(otH||0,'h')+' · 휴가 '+wFmt(vac||0,'h'))+
+wCard(m+' 야근시간',wU(otH||0,'h'),'var(--coral)','#FB923C','MONTH',stdBar(otH&&stdE?otH/stdE*100:0,null,'#FB923C')+'야근 '+wFmt(otN||0,'회')+' · 작업시간의 '+(hrs?wFmt((otH||0)/hrs*100,'%'):'—')+' · 경과기준 대비 +'+(stdE?wFmt((otH||0)/stdE*100,'%'):'—'))+
 wCard('연간 기준 대비',wFmt(yr,'%'),stdColor(yr),'#A78BFA','YTD',stdBar(yr,100,'#A78BFA')+(ytd?'작업 '+wFmt(ytd.work,'h')+' / 기준 '+wFmt(ytd.std,'h')+' · '+ytd.label:''));}
 function stdYtd(getN,work){
 const ms=WELD.active.filter(mm=>{const S=stdMonth(mm);return S&&S.elapsed>0;});
@@ -994,13 +994,13 @@ function renderWeldStdAll(){
 const m=weldMonth,n=weldActiveMachines(m);
 document.getElementById('weldStdLabel').textContent='('+m+' · 가동 '+n+'대 · 1일 '+STD_DAY_H+'h · 한국 공휴일 반영)';
 document.getElementById('weldStdBoard').innerHTML=stdCards(m,n,mcVal('work',m,'전체','총 작업시간'),mcVal('work',m,'전체','야근시간'),mcVal('work',m,'전체','휴가차감'),
-stdYtd(weldActiveMachines,mcVal('work','연간 합계','전체','총 작업시간')));}
+stdYtd(weldActiveMachines,mcVal('work','연간 합계','전체','총 작업시간')),mcVal('work',m,'전체','야근횟수'));}
 function renderWeldStdMc(g){
 const m=weldMonth;
 document.getElementById('weldMcStdLabel').textContent='('+m+' · 1일 '+STD_DAY_H+'h · 한국 공휴일 반영)';
 const ytdMs=WELD.active.filter(mm=>(mcVal('work',mm,g,'총 작업시간')||0)>0||mm===m);
 document.getElementById('weldMcStdBoard').innerHTML=stdCards(m,1,mcVal('work',m,g,'총 작업시간'),mcVal('work',m,g,'야근시간'),mcVal('work',m,g,'휴가차감'),
-stdYtd(mm=>ytdMs.includes(mm)?1:0,mcVal('work','연간 합계',g,'총 작업시간')));}
+stdYtd(mm=>ytdMs.includes(mm)?1:0,mcVal('work','연간 합계',g,'총 작업시간')),mcVal('work',m,g,'야근횟수'));}
 
 function selectWeldMonth(m){if(WELD&&WELD.active.includes(m)){weldMonth=m;renderWeld();}}
 function renderWeldChips(){
