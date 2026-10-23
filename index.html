@@ -76,7 +76,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 .weld-unit{font-size:.5em;font-weight:600;margin-left:4px;opacity:.75;}
 .std-bar{height:6px;border-radius:3px;background:rgba(139,148,158,.18);overflow:hidden;margin:6px 0 4px;position:relative;}.std-bar>i{display:block;height:100%;border-radius:3px;}.std-bar>b{position:absolute;top:-2px;bottom:-2px;width:2px;background:#F0F6FC;opacity:.7;}
 .weld-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
-.weld-grid5{grid-template-columns:repeat(5,minmax(0,1fr));}@media(max-width:900px){.weld-grid5{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.weld-grid4{grid-template-columns:repeat(4,minmax(0,1fr));}@media(max-width:900px){.weld-grid4{grid-template-columns:repeat(2,minmax(0,1fr));}}
 </style>
 </head>
 <body>
@@ -241,22 +241,14 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <div style="font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
 <span style="width:3px;height:12px;border-radius:2px;background:var(--coral);display:inline-block;"></span>월 실적 <span id="weldMonthLabel" style="font-weight:400;font-size:11px;"></span>
 </div>
-<div class="weld-grid" id="weldMonthBoard"></div>
-</section>
-<section>
-<div style="font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
-<span style="width:3px;height:12px;border-radius:2px;background:var(--teal);display:inline-block;"></span>기준시간 대비 작업시간 · 전체 <span id="weldStdLabel" style="font-weight:400;font-size:11px;"></span>
-</div>
-<div class="weld-grid" id="weldStdBoard"></div>
+<div class="weld-grid weld-grid4" id="weldMonthBoard"></div>
 </section>
 <section id="weldMcSection" class="card" style="display:none;">
 <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
 <div style="font-size:17px;font-weight:800;" id="weldMcTitle"></div>
 <div style="font-size:12px;color:var(--text-muted);" id="weldMcSub"></div>
 </div>
-<div class="weld-grid weld-grid5" id="weldMcBoard"></div>
-<div style="font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.1em;margin:14px 0 8px;display:flex;align-items:center;gap:8px;"><span style="width:3px;height:12px;border-radius:2px;background:var(--teal);display:inline-block;"></span>기준시간 대비 작업시간 <span id="weldMcStdLabel" style="font-weight:400;font-size:11px;"></span></div>
-<div class="weld-grid weld-grid5" id="weldMcStdBoard"></div>
+<div class="weld-grid weld-grid4" id="weldMcBoard"></div>
 <div id="weldMcComment" style="margin-top:12px;padding:11px 15px;border-radius:6px;font-size:13px;line-height:1.85;color:var(--text-secondary);"></div>
 <div class="weld-2col" style="margin-top:14px;">
 <div class="weld-panel"><div class="weld-panel-t">월별 생산실적 · 시간당 생산량 추이</div><div id="weldMcTrend" style="height:240px;"></div></div>
@@ -994,12 +986,10 @@ return{work,std,label:ms.length?(ms[0]+'~'+ms[ms.length-1]+' 경과분'):''};}
 function weldActiveMachines(mm){const gs=WELD.machine.groups;const n=gs.filter(g=>(mcVal('work',mm,g,'총 작업시간')||0)>0).length;return n||gs.length;}
 function renderWeldStdAll(){
 const m=weldMonth,n=weldActiveMachines(m);
-document.getElementById('weldStdLabel').textContent='('+m+' · 가동 '+n+'대 · 1일 '+STD_DAY_H+'h · 한국 공휴일 반영)';
-document.getElementById('weldStdBoard').innerHTML=stdCards(m,n,mcVal('work',m,'전체','총 작업시간'),mcVal('work',m,'전체','야근시간'),mcVal('work',m,'전체','휴가차감'),
+return stdParts(m,n,mcVal('work',m,'전체','총 작업시간'),mcVal('work',m,'전체','야근시간'),mcVal('work',m,'전체','휴가차감'),
 stdYtd(weldActiveMachines,mcVal('work','연간 합계','전체','총 작업시간')),mcVal('work',m,'전체','야근횟수'));}
 function renderWeldStdMc(g){
 const m=weldMonth;
-document.getElementById('weldMcStdLabel').textContent='('+m+' · 1일 '+STD_DAY_H+'h · 한국 공휴일 반영)';
 const ytdMs=WELD.active.filter(mm=>(mcVal('work',mm,g,'총 작업시간')||0)>0||mm===m);
 return stdParts(m,1,mcVal('work',m,g,'총 작업시간'),mcVal('work',m,g,'야근시간'),mcVal('work',m,g,'휴가차감'),
 stdYtd(mm=>ytdMs.includes(mm)?1:0,mcVal('work','연간 합계',g,'총 작업시간')),mcVal('work',m,g,'야근횟수'));}
@@ -1027,13 +1017,15 @@ wCard('총 작업시간',wU(T['총 작업시간'],'h'),'var(--teal)','#2DD4BF','
 const rate=wRate(M['생산실적'],M['계획수량']);
 const wk=(W.work.data[m]||{})['전체']||{};
 document.getElementById('weldMonthLabel').textContent='('+m+')';
+const SA=renderWeldStdAll()||{};
 document.getElementById('weldMonthBoard').innerHTML=
 wCard(m+' 계획',wEA(M['계획수량']),'var(--text-secondary)','#8B949E','MONTH','잔량 '+wFmt(M['잔량(계획-실적)'],' EA'))+
 wCard(m+' 생산실적',wEA(M['생산실적']),'var(--sky)','#38BDF8','MONTH',wDelta(M['생산실적'],P['생산실적']))+
 wCard('달성률',wFmt(rate,'%'),wRateColor(rate),'#FBBF24','MONTH',pm?'전월 '+wFmt(wRate(P['생산실적'],P['계획수량']),'%'):'')+
-wCard('총 작업시간',wU(M['총 작업시간'],'h'),'var(--teal)','#2DD4BF','MONTH','가동 '+wFmt(wk['가동일(호기×일)'],'일')+' · 야근 '+wFmt(wk['야근횟수'],'회'))+
-wCard('시간당 생산량',wU(M['시간당생산량'],'EA/h'),'var(--coral)','#FB923C','MONTH',wDelta(M['시간당생산량'],P['시간당생산량']));
-renderWeldStdAll();renderWeldMc();renderWeldInsight();renderWeldMonthChart();renderWeldMachine();renderWeldSize();
+wCard('시간당 생산량',wU(M['시간당생산량'],'EA/h'),'var(--coral)','#FB923C','MONTH',wDelta(M['시간당생산량'],P['시간당생산량']))+
+wCard(m+' 총 작업시간',wU(M['총 작업시간'],'h'),'var(--teal)','#2DD4BF','MONTH','가동 '+wFmt(wk['가동일(호기×일)'],'일')+' · 야근 '+wFmt(wk['야근횟수'],'회'))+
+(SA.std||'')+(SA.ot||'')+(SA.rate||'');
+renderWeldMc();renderWeldInsight();renderWeldMonthChart();renderWeldMachine();renderWeldSize();
 const b=W.basis;document.getElementById('weldBasis').textContent=b.length?'※ 근무시간 기준: '+b.join(' '):'';}
 
 function renderWeldInsight(){
@@ -1154,9 +1146,8 @@ cHr=wCard('시간당 생산량',wU(hr,'EA/h'),hr!=null&&avg!=null&&hr>=avg?'var(
 cShare=wCard('생산 점유율',wFmt(share,'%'),'var(--violet)','#A78BFA','MONTH','전체 '+wFmt(tot)+' 중'),
 cHrs=wCard(m+' 작업시간',wU(hrs,'h'),'var(--teal)','#2DD4BF','MONTH','근무 '+wFmt(days,'일')+' · 야근 '+wFmt(otN,'회')+' · 휴가 '+wFmt(vac,'h')),
 cYtd=wCard('연간 누적',wEA(yProd),'var(--text-secondary)','#8B949E','YTD','작업 '+wFmt(yH,'h')+' · 시간당 '+wFmt(yHr));
-document.getElementById('weldMcBoard').innerHTML=cYtd+cProd+cHrs+cHr+cShare;
-const SP=renderWeldStdMc(g);
-document.getElementById('weldMcStdBoard').innerHTML=SP?SP.std+SP.ot+SP.rate:'';
+const SP=renderWeldStdMc(g)||{};
+document.getElementById('weldMcBoard').innerHTML=cYtd+cProd+cHrs+cHr+cShare+(SP.std||'')+(SP.ot||'')+(SP.rate||'');
 // 코멘트
 let cm='▶ <strong style="color:'+c+'">'+g+'</strong> '+m+' 생산 '+wFmt(prod)+'EA';
 if(pProd!=null&&prod!=null)cm+=' (전월 대비 '+(prod>=pProd?'<span class="up">▲':'<span class="down">▼')+wFmt(Math.abs(prod-pProd))+'</span>)';
