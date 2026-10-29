@@ -318,12 +318,22 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 </section>
 <section class="card">
 <div style="font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">호기별 생산 실적</div>
-<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">그래프: 월별 호기 실적 · 표: 선택한 월의 호기별 근무·생산</div>
+<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">그래프: 월별 호기 실적 · 표: 선택한 월의 호기별 생산</div>
 <div id="weldMachineChart" style="height:240px;"></div>
 <div style="overflow-x:auto;margin-top:12px;">
 <table class="exec" style="width:100%;border-collapse:collapse;">
-<thead><tr><th>호기</th><th>생산실적</th><th>시간당 생산량</th><th>근무일</th><th>야근</th><th>휴가차감</th><th>총 작업시간</th><th>휴가 (연차/반차/반반차)</th></tr></thead>
+<thead><tr><th>호기</th><th>생산실적</th><th>시간당 생산량</th><th>근무일</th></tr></thead>
 <tbody id="weldMachineTable"></tbody>
+</table>
+</div>
+</section>
+<section class="card">
+<div style="font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text-secondary);">호기별 근무현황 <span id="weldWorkLabel" style="font-weight:400;font-size:12px;color:var(--text-muted);"></span></div>
+<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">선택한 월의 호기별 야근 · 휴가 · 작업시간</div>
+<div style="overflow-x:auto;">
+<table class="exec" style="width:100%;border-collapse:collapse;">
+<thead><tr><th>호기</th><th>야근</th><th>휴가차감</th><th>총 작업시간</th><th>휴가 (연차/반차/반반차)</th></tr></thead>
+<tbody id="weldWorkTable"></tbody>
 </table>
 </div>
 </section>
@@ -1107,7 +1117,10 @@ const md=W.machine.data[m]||{},wd=W.work.data[m]||{},ld=W.leave.data[m]||{};
 const row=(g,bold)=>{const a=md[g]||{},w=wd[g]||{},l=ld[g]||{};
 return '<tr'+(bold?' style="border-top:1px solid var(--border);font-weight:700;"':'')+'><td style="font-weight:600;color:'+(WELD_COLORS[g]||'var(--text-secondary)')+';">'+g+'</td>'+
 '<td class="num">'+wFmt(a['생산실적'])+'</td><td class="num">'+wFmt(a['시간당생산량'])+'</td>'+
-'<td class="num">'+wFmt(w['근무일']??w['가동일(호기×일)'],'일')+'</td><td class="num">'+wFmt(w['야근횟수'],'회')+' / '+wFmt(w['야근시간'],'h')+'</td>'+
+'<td class="num">'+wFmt(w['근무일']??w['가동일(호기×일)'],'일')+'</td></tr>';};
+const wrow=(g)=>{const w=wd[g]||{},l=ld[g]||{};
+return '<tr><td style="font-weight:600;color:'+(WELD_COLORS[g]||'var(--text-secondary)')+';">'+g+'</td>'+
+'<td class="num">'+wFmt(w['야근횟수'],'회')+' / '+wFmt(w['야근시간'],'h')+'</td>'+
 '<td class="num">'+wFmt(w['휴가차감'],'h')+'</td><td class="num">'+wFmt(w['총 작업시간'],'h')+'</td>'+
 '<td class="num">'+wFmt(l['연차'])+' / '+wFmt(l['반차'])+' / '+wFmt(l['반반차'])+'</td></tr>';};
 const tot=(()=>{const T=M2=>gs.reduce((s,g)=>s+(((md[g]||{})[M2])||0),0);const a=T('생산실적'),w=wd['전체']||{};
@@ -1115,9 +1128,13 @@ return{a,h:w['총 작업시간']};})();
 let html=gs.map(g=>row(g)).join('');
 const w=wd['전체']||{},l=ld['전체']||{};
 html+='<tr style="border-top:1px solid var(--border);font-weight:700;"><td>전체</td><td class="num">'+wFmt(tot.a)+'</td><td class="num">'+(tot.h?wFmt(tot.a/tot.h):'—')+'</td>'+
-'<td class="num">'+wFmt(w['가동일(호기×일)'],'일')+'</td><td class="num">'+wFmt(w['야근횟수'],'회')+' / '+wFmt(w['야근시간'],'h')+'</td><td class="num">'+wFmt(w['휴가차감'],'h')+'</td><td class="num">'+wFmt(w['총 작업시간'],'h')+'</td>'+
+'<td class="num">'+wFmt(w['가동일(호기×일)'],'일')+'</td></tr>';
+document.getElementById('weldMachineTable').innerHTML=html;
+let wh=gs.map(g=>wrow(g)).join('');
+wh+='<tr style="border-top:1px solid var(--border);font-weight:700;"><td>전체</td><td class="num">'+wFmt(w['야근횟수'],'회')+' / '+wFmt(w['야근시간'],'h')+'</td><td class="num">'+wFmt(w['휴가차감'],'h')+'</td><td class="num">'+wFmt(w['총 작업시간'],'h')+'</td>'+
 '<td class="num">'+wFmt(l['연차'])+' / '+wFmt(l['반차'])+' / '+wFmt(l['반반차'])+'</td></tr>';
-document.getElementById('weldMachineTable').innerHTML=html;}
+document.getElementById('weldWorkTable').innerHTML=wh;
+const wl=document.getElementById('weldWorkLabel');if(wl)wl.textContent='('+m+')';}
 
 function renderWeldSize(){
 const W=WELD,m=weldMonth,sd=W.size.data[m]||{},gs=W.size.groups;
