@@ -311,7 +311,7 @@ table.exec tbody tr:hover{background:rgba(255,255,255,.025);}
 <div id="weldMonthChart" style="height:260px;"></div>
 <div style="overflow-x:auto;margin-top:12px;">
 <table class="exec" style="width:100%;border-collapse:collapse;">
-<thead><tr><th>월</th><th>계획</th><th>실적</th><th>잔량</th><th>달성률</th><th>기타(계획외)</th><th>총 작업시간</th><th>시간당 생산량</th></tr></thead>
+<thead><tr><th>월</th><th>계획</th><th>실적</th><th>잔량</th><th>달성률</th><th>총 잔업시간</th><th>총 작업시간</th><th>시간당 생산량</th></tr></thead>
 <tbody id="weldMonthTable"></tbody>
 </table>
 </div>
@@ -1104,8 +1104,8 @@ const tb=document.getElementById('weldMonthTable');
 tb.innerHTML=ms.map(m=>{const x=W.monthly[m],r=wRate(x['생산실적'],x['계획수량']);
 return '<tr style="cursor:pointer;'+(m===weldMonth?'background:rgba(251,146,60,.08);':'')+'" onclick="selectWeldMonth(\''+m+'\')"><td style="font-weight:600;color:'+(m===weldMonth?'var(--coral)':'var(--text-secondary)')+';">'+m+'</td>'+
 '<td class="num">'+wFmt(x['계획수량'])+'</td><td class="num">'+wFmt(x['생산실적'])+'</td><td class="num">'+wFmt(x['잔량(계획-실적)'])+'</td>'+
-'<td class="num" style="color:'+wRateColor(r)+'">'+wFmt(r,'%')+'</td><td class="num">'+wFmt(x['기타(계획외)'])+'</td><td class="num">'+wFmt(x['총 작업시간'],'h')+'</td><td class="num">'+wFmt(x['시간당생산량'])+'</td></tr>';}).join('')+
-(()=>{const x=WELD.total,r=wRate(x['생산실적'],x['계획수량']);return '<tr style="border-top:2px solid var(--violet);font-weight:700;background:rgba(167,139,250,.14);"><td style="color:var(--violet);">연간 합계</td><td class="num">'+wFmt(x['계획수량'])+'</td><td class="num">'+wFmt(x['생산실적'])+'</td><td class="num">'+wFmt(x['잔량(계획-실적)'])+'</td><td class="num" style="color:'+wRateColor(r)+'">'+wFmt(r,'%')+'</td><td class="num">'+wFmt(x['기타(계획외)'])+'</td><td class="num">'+wFmt(x['총 작업시간'],'h')+'</td><td class="num">'+wFmt(x['시간당생산량'])+'</td></tr>';})();}
+'<td class="num" style="color:'+wRateColor(r)+'">'+wFmt(r,'%')+'</td><td class="num">'+wFmt(otHas(m)?otTot(m):null,'h')+'</td><td class="num">'+wFmt(x['총 작업시간'],'h')+'</td><td class="num">'+wFmt(x['시간당생산량'])+'</td></tr>';}).join('')+
+(()=>{const x=WELD.total,r=wRate(x['생산실적'],x['계획수량']);return '<tr style="border-top:2px solid var(--violet);font-weight:700;background:rgba(167,139,250,.14);"><td style="color:var(--violet);">연간 합계</td><td class="num">'+wFmt(x['계획수량'])+'</td><td class="num">'+wFmt(x['생산실적'])+'</td><td class="num">'+wFmt(x['잔량(계획-실적)'])+'</td><td class="num" style="color:'+wRateColor(r)+'">'+wFmt(r,'%')+'</td><td class="num">'+wFmt((()=>{const ms=WELD.active.filter(otHas);return ms.length?ms.reduce((t,mm)=>t+otTot(mm),0):null;})(),'h')+'</td><td class="num">'+wFmt(x['총 작업시간'],'h')+'</td><td class="num">'+wFmt(x['시간당생산량'])+'</td></tr>';})();}
 
 function renderWeldMachine(){
 const W=WELD,ms=W.active,gs=W.machine.groups,m=weldMonth;
